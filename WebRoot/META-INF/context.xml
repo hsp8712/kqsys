@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Resource name="jdbc/test"
+		auth="Container"
+	    type="javax.sql.DataSource"
+		maxActive="20"
+		maxIdel="10"
+		maxWait="1000"
+		username="root"
+		password="root"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/mysql"
+		factory="org.apache.commons.dbcp.BasicDataSourceFactory" />
+</Context>

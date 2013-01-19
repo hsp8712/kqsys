@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" 
+	xmlns="http://java.sun.com/xml/ns/j2ee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>LoginAndOutServlet</servlet-name>
+    <servlet-class>net.oraro.control.LoginAndOutServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>check in servlet</description>
+    <display-name>CheckinServlet</display-name>
+    <servlet-name>CheckinServlet</servlet-name>
+    <servlet-class>net.oraro.control.CheckinServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>DailyRecordServlet</servlet-name>
+    <servlet-class>net.oraro.control.DailyRecordServlet</servlet-class>
+  </servlet>
+
+
+
+  <servlet-mapping>
+    <servlet-name>LoginAndOutServlet</servlet-name>
+    <url-pattern>/servlet/LoginAndOutServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CheckinServlet</servlet-name>
+    <url-pattern>/servlet/CheckinServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DailyRecordServlet</servlet-name>
+    <url-pattern>/servlet/DailyRecordServlet</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>login.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

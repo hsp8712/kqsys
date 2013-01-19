@@ -1,0 +1,11 @@
+<table class="tableClass-Page" >
+	<tr>
+		<td>
+			共：&nbsp;#totalSize&nbsp;条&nbsp;&nbsp;&nbsp;第&nbsp;#currentPageNo/#totalPageNum&nbsp;页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img src="/kqsys/img/btn_firstPage.gif" onclick="HPageTable.go2page('#formName', #firstPageNo)" />&nbsp;&nbsp;
+			<img src="/kqsys/img/btn_prevPage.gif" onclick="HPageTable.go2page('#formName', #prePageNo)" />&nbsp;&nbsp;
+			<img src="/kqsys/img/btn_nextPage.gif" onclick="HPageTable.go2page('#formName', #nextPageNo)" />&nbsp;&nbsp;
+			<img src="/kqsys/img/btn_lastPage.gif" onclick="HPageTable.go2page('#formName', #lastPageNo)" />
+		</td>
+	</tr>
+</table>
