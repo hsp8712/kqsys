@@ -38,7 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<div class="easyui-layout" style="width:900px;height:100%; text-align:left; margin: 0 auto; ">
 			<div data-options="region:'north'" style="height:90px;overflow:hidden;padding:10px">
 				<div style="width: 100%; height: 15px; text-align: right;">
-					您好！${CURRENT_USER.name }&nbsp;|&nbsp;<a href="servlet/LoginAndOutServlet?opertype=1">退出</a>
+					您好！${CURRENT_USER.empno }-${CURRENT_USER.name }&nbsp;|&nbsp;<a href="servlet/LoginAndOutServlet?opertype=1">退出</a>
 				</div>
 				<h2>考勤系统</h2>
 			</div>

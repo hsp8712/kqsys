@@ -1,7 +1,5 @@
-<%@page import="net.oraro.db.DBTest"%>
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%
-DBTest.test();
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>

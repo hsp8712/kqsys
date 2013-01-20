@@ -1,7 +1,9 @@
 package net.oraro.db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -23,21 +25,7 @@ public class DBUtil {
 	private static DataSource dataSource;
 	
 	/**	线程独占连接 */
-	private static ThreadLocal<Connection> connectionContext = new ThreadLocal<Connection>() {
-		
-		@Override
-		protected Connection initialValue() {
-			
-			Connection conn = null;
-			try {
-				conn = DBUtil.getDataSource().getConnection();
-			} catch (SQLException e) {
-				log.error(e.getMessage());
-			}
-			
-			return conn;
-		}
-	};
+	private static ThreadLocal<Connection> connectionContext = new ThreadLocal<Connection>();
 	
 	/**
 	 * 获取数据源
@@ -49,10 +37,11 @@ public class DBUtil {
 		}
 		
 		try {
-			Context ctx = new InitialContext();
-			dataSource = (DataSource)ctx.lookup("java:comp/env/jdbc/mysql");
+			Context initCtx = new InitialContext();
+			Context envCtx = (Context) initCtx.lookup("java:comp/env");
+			dataSource = (DataSource)envCtx.lookup("jdbc/kqsys");
 		} catch (NamingException e) {
-			log.error(e.getMessage());
+			log.error(e.getMessage(), e);
 		}
 		
 		return dataSource;
@@ -72,12 +61,59 @@ public class DBUtil {
 			
 			DataSource ds = getDataSource();
 			if(ds == null) {
-				throw new SQLException("DataSource is null.");
+				throw new SQLException("Cannot get DataSource, DataSource is null.");
 			}
 			conn = ds.getConnection();
 			connectionContext.set(conn);
 		}
 		
 		return conn;
+	}
+	
+	/**
+	 * 资源释放-释放Connection
+	 * @param conn
+	 * @throws SQLException
+	 */
+	public static void release(Connection conn) {
+		try {
+			if(conn != null || !conn.isClosed()) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			log.error(e.getMessage(), e);
+		}
+	}
+	
+	/**
+	 * 资源释放-释放Connection,Statement
+	 * @param conn
+	 * @throws SQLException
+	 */
+	public static void release(Statement stmt, Connection conn) {
+		try {
+			if(stmt != null || !stmt.isClosed()) {
+				stmt.close();
+			}
+		} catch (SQLException e) {
+			log.error(e.getMessage(), e);
+		}
+		release(conn);
+	}
+	
+	/**
+	 * 资源释放-释放Connection,Statement,ResultSet
+	 * @param conn
+	 * @throws SQLException
+	 */
+	public static void release(ResultSet rs, Statement stmt, Connection conn) {
+		try {
+			if(rs != null || !rs.isClosed()) {
+				rs.close();
+			}
+		} catch (SQLException e) {
+			log.error(e.getMessage(), e);
+		}
+		release(stmt, conn);
 	}
 }

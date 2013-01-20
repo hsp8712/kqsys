@@ -31,7 +31,7 @@ public class CheckinServlet extends HttpServlet {
 		String validateCode = request.getParameter("validateCode");
 		if(validateCode == null) {
 			msg = "打卡失败（验证码不能为空）.";
-			log.error(msg);
+			log.error("Validate Code cannot be null, checkin failed.");
 			request.setAttribute(ServletConstants.REQ_MSG, msg);
 			request.getRequestDispatcher("/checkin.jsp").forward(request, response);
 			return;
@@ -42,7 +42,7 @@ public class CheckinServlet extends HttpServlet {
 		String realCode = String.valueOf(session.getAttribute(ServletConstants.SEN_VALIDCODE));
 		if(!validateCode.equals(realCode)) {
 			msg = "打卡失败（验证码错误）.";
-			log.error(msg);
+			log.error("Validate Code is error, checkin failed.");
 			request.setAttribute(ServletConstants.REQ_MSG, msg);
 			request.getRequestDispatcher("/checkin.jsp").forward(request, response);
 			return;
@@ -52,17 +52,17 @@ public class CheckinServlet extends HttpServlet {
 		Object userObj = session.getAttribute(LoginAndOutServlet.SESSIONKEY_CURRENT_USER);
 		User curUser = (User) userObj;
 		
-		// 当前时间
-		Date date = new Date();
-		
 		CheckInService checkInService = ServicesFactory.instance().getCheckInService();
-		boolean checkinSuccess = checkInService.checkIn(curUser, date);
+		boolean checkinSuccess = checkInService.checkIn(curUser);
 		
 		if(checkinSuccess) {
 			msg = "打卡成功.";
+			log.info("Check in successfully.");
 		} else {
 			msg = "打卡失败.";
+			log.info("Check in failed.");
 		}
+		
 		request.setAttribute(ServletConstants.REQ_MSG, msg);
 		request.getRequestDispatcher("/checkin.jsp").forward(request, response);
 	}

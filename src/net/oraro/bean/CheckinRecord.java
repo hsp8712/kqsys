@@ -12,22 +12,22 @@ public class CheckinRecord {
 	private User user;			// 用户
 	private Date checkTime;		// 打卡时间
 	
-	private Integer getId() {
+	public Integer getId() {
 		return id;
 	}
-	private void setId(Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	private User getUser() {
+	public User getUser() {
 		return user;
 	}
-	private void setUser(User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
-	private Date getCheckTime() {
+	public Date getCheckTime() {
 		return checkTime;
 	}
-	private void setCheckTime(Date checkTime) {
+	public void setCheckTime(Date checkTime) {
 		this.checkTime = checkTime;
 	}
 }

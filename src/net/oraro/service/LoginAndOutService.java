@@ -1,5 +1,6 @@
 package net.oraro.service;
 
+import java.util.List;
 import java.util.Set;
 
 import net.oraro.bean.Right;
@@ -20,7 +21,7 @@ public interface LoginAndOutService {
 	 * @return
 	 * @throws LoginAndOutException
 	 */
-	boolean login(String account, String passwd) throws LoginAndOutException;
+	User login(String account, String passwd) throws LoginAndOutException;
 	
 	/**
 	 * 注销登录
@@ -41,5 +42,5 @@ public interface LoginAndOutService {
 	 * @param userId	用户id
 	 * @return
 	 */
-	Set<Right> getRights(int userId);
+	List<Right> getRights(int userId);
 }

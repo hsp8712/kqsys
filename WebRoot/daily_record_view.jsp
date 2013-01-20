@@ -38,10 +38,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   	<H:table name="page" tableClass="tableClass" var="dailyRecord" formName="inputForm" showPageBottom="true">
   		<H:tablefield title="日期" ><fmt:formatDate value="${dailyRecord.date }"  pattern="yyyy-MM-dd" /></H:tablefield>
-		<H:tablefield title="首次打卡时间" ><fmt:formatDate value="${dailyRecord.startTime }"  pattern="yyyy-MM-dd HH:mm:ss" /></H:tablefield>
-		<H:tablefield title="最后打卡时间" ><fmt:formatDate value="${dailyRecord.endTime }"  pattern="yyyy-MM-dd HH:mm:ss" /></H:tablefield>
-		<H:tablefield title="加班开始时间" ><fmt:formatDate value="${dailyRecord.extraWorkStime }"  pattern="yyyy-MM-dd HH:mm:ss" /></H:tablefield>
-		<H:tablefield title="加班时长" >${dailyRecord.overtimeHour }</H:tablefield>
+		<H:tablefield title="首次打卡时间" ><fmt:formatDate value="${dailyRecord.firstTime }"  pattern="yyyy-MM-dd HH:mm:ss" /></H:tablefield>
+		<H:tablefield title="最后打卡时间" ><fmt:formatDate value="${dailyRecord.lastTime }"  pattern="yyyy-MM-dd HH:mm:ss" /></H:tablefield>
+		<H:tablefield title="加班开始时间" ><fmt:formatDate value="${dailyRecord.overTime }"  pattern="yyyy-MM-dd HH:mm:ss" /></H:tablefield>
+		<H:tablefield title="加班时长" >${dailyRecord.overTimeHour }</H:tablefield>
   	</H:table>
   </body>
 </html>

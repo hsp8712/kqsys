@@ -9,8 +9,10 @@ import java.util.List;
  */
 public class User {
 	private Integer 	id;				// id
+	private String		empno;			// 工号
 	private String 		name;			// 姓名
 	private String 		account;		// 账号
+	private String 		password;		// 密码（已加密）
 	private Team 		team;			// 组
 	private List<Right> rights;			// 权限
 	public Integer getId() {
@@ -42,6 +44,18 @@ public class User {
 	}
 	public void setRights(List<Right> rights) {
 		this.rights = rights;
+	}
+	public String getEmpno() {
+		return empno;
+	}
+	public void setEmpno(String empno) {
+		this.empno = empno;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 }

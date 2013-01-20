@@ -1,6 +1,7 @@
 package net.oraro.control;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -46,16 +47,15 @@ public class LoginAndOutServlet extends HttpServlet {
 			// 登录
 			
 			try {
-				boolean loginSuccess = service.login(account, passwd);
-				if(loginSuccess) {
+				User user = service.login(account, passwd);
+				if(user != null) {
 					log.info("Login success.");
 					
 					// 放入session
-					User currUser = service.getUserByAccount(account);
 					HttpSession session = WebUtil.getNewSession(request);
-					session.setAttribute(SESSIONKEY_CURRENT_USER, currUser);
+					session.setAttribute(SESSIONKEY_CURRENT_USER, user);
 					
-					Set<Right> rights = service.getRights(currUser.getId());
+					List<Right> rights = service.getRights(user.getId());
 					session.setAttribute(SESSIONKEY_CURRENT_USER_RIGHTS, rights);
 					
 					request.getRequestDispatcher("/index.jsp").forward(request, response);
