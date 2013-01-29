@@ -1,7 +1,6 @@
 package net.oraro.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import net.oraro.bean.User;
 import net.oraro.exception.DataAccessException;

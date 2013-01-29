@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.oraro.bean.Team;
@@ -44,6 +45,7 @@ public class UserDaoImpl implements UserDao{
 			ps.setInt(5, belongTeam.getId());
 			
 			execSuccess = ps.execute();
+			log.info(sql);
 		} catch (SQLException e) {
 			log.error(e.getMessage());
 			throw new DataAccessException("数据库异常.");
@@ -75,7 +77,8 @@ public class UserDaoImpl implements UserDao{
 	@Override
 	public User queryByAccountAndPassword(String account, String password) throws DataAccessException {
 		
-		String sql = "select * from kq_user where account=? and password=?";
+		String sql = "select u.account, u.empno, u.id, u.name, u.team_id, t.team_name, t.description " +
+				"from kq_user u, kq_team t where u.team_id=t.id and u.account=? and u.password=?";
 		
 		User user = null;
 		Connection conn = null;
@@ -87,6 +90,7 @@ public class UserDaoImpl implements UserDao{
 			ps.setString(1, account);
 			ps.setString(2, password);
 			rs = ps.executeQuery();
+			log.info(sql);
 			
 			if(rs.next()) {
 				user = new User();
@@ -94,7 +98,15 @@ public class UserDaoImpl implements UserDao{
 				user.setEmpno(rs.getString("empno"));
 				user.setId(rs.getInt("id"));
 				user.setName(rs.getString("name"));
+				
+				Team team = new Team();
+				team.setId(rs.getInt("team_id"));
+				team.setTeamName(rs.getString("team_name"));
+				team.setDescription(rs.getString("description"));
+				user.setTeam(team);
 			}
+			
+			
 		} catch (SQLException e) {
 			log.error(e.getMessage());
 			throw new DataAccessException("数据库异常.");
@@ -113,8 +125,37 @@ public class UserDaoImpl implements UserDao{
 
 	@Override
 	public List<User> executeQuery(String sql) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		User user = null;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		List<User> users = new ArrayList<User>();
+		try {
+			conn = DBUtil.getConnection();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			log.info(sql);
+			
+			while(rs.next()) {
+				user = new User();
+				user.setAccount(rs.getString("account"));
+				user.setEmpno(rs.getString("empno"));
+				user.setId(rs.getInt("id"));
+				user.setName(rs.getString("name"));
+				
+				users.add(user);
+			}
+			
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+			throw new DataAccessException("数据库异常.");
+		} finally {
+			DBUtil.release(rs, ps, conn);
+		}
+		
+		return users;
 	}
 
 

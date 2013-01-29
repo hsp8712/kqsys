@@ -2,7 +2,6 @@ package net.oraro.control;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,14 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
-
 import net.oraro.bean.Right;
 import net.oraro.bean.User;
 import net.oraro.exception.LoginAndOutException;
 import net.oraro.factory.ServicesFactory;
 import net.oraro.service.LoginAndOutService;
 import net.oraro.web.WebUtil;
+
+import org.apache.log4j.Logger;
 
 /**
  * 登录注销servlet

@@ -59,6 +59,7 @@ public class RightDaoImpl implements RightDao{
 			String sql = "select b.* from kq_user_right a, kq_right b where a.right_id=b.id and a.user_id=" + userId;
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
+			log.info(sql);
 			
 			rights = new ArrayList<Right>();
 			while(rs.next()) {

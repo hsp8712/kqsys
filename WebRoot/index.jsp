@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles/reset.css">
 	<link rel="stylesheet" type="text/css" href="styles/common.css">
 	
-	<link rel="stylesheet" type="text/css" href="jquery-easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="jquery-easyui/themes/metro/easyui.css">
 	<link rel="stylesheet" type="text/css" href="jquery-easyui/themes/icon.css">
 	<script type="text/javascript" src="jquery-easyui/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="jquery-easyui/jquery.easyui.min.js"></script>
@@ -52,7 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</ul>
 			</div>
 			<div data-options="region:'center',title:'主功能窗口'" style="background:#fafafa;overflow:hidden">
-				<iframe id="main_frame" width="100%" height="100%" src="checkin.jsp" frameborder="0"  />
+				<iframe id="main_frame" width="100%" height="100%" src="page/checkin.jsp" frameborder="0"  />
 			</div>
 		</div>
 

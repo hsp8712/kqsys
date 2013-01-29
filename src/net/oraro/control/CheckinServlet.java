@@ -1,7 +1,6 @@
 package net.oraro.control;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,11 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
-
 import net.oraro.bean.User;
 import net.oraro.factory.ServicesFactory;
 import net.oraro.service.CheckInService;
+
+import org.apache.log4j.Logger;
 
 public class CheckinServlet extends HttpServlet {
 	
@@ -33,7 +32,7 @@ public class CheckinServlet extends HttpServlet {
 			msg = "打卡失败（验证码不能为空）.";
 			log.error("Validate Code cannot be null, checkin failed.");
 			request.setAttribute(ServletConstants.REQ_MSG, msg);
-			request.getRequestDispatcher("/checkin.jsp").forward(request, response);
+			request.getRequestDispatcher("/page/checkin.jsp").forward(request, response);
 			return;
 		}
 		
@@ -44,7 +43,7 @@ public class CheckinServlet extends HttpServlet {
 			msg = "打卡失败（验证码错误）.";
 			log.error("Validate Code is error, checkin failed.");
 			request.setAttribute(ServletConstants.REQ_MSG, msg);
-			request.getRequestDispatcher("/checkin.jsp").forward(request, response);
+			request.getRequestDispatcher("/page/checkin.jsp").forward(request, response);
 			return;
 		}
 		
@@ -64,7 +63,7 @@ public class CheckinServlet extends HttpServlet {
 		}
 		
 		request.setAttribute(ServletConstants.REQ_MSG, msg);
-		request.getRequestDispatcher("/checkin.jsp").forward(request, response);
+		request.getRequestDispatcher("/page/checkin.jsp").forward(request, response);
 	}
 
 }

@@ -5,10 +5,11 @@ input { padding: 2px;}
 #main_wrap { width: 100%; height: 100%; text-align:center;  }
 
 /* 表单table */
-.tableClass { margin: 10px; width: 80%; background-color: #bbccff;  }
+.tableClass { margin: 5px; width: 98%; background-color: #e1e1e1;  }
 .tableClass td {background-color: #fafafa; height: 27px; padding: 5px; vertical-align: middle; }
-.tableClass th {background-color: #ddd; height: 27px; padding: 5px; vertical-align: middle;}
+.tableClass th {background-color: #eeeeee; height: 27px; padding: 5px; vertical-align: middle;}
 .tableClass td input { height: 22px; vertical-align: middle; }
 .tableClass td span { height: 20px; vertical-align: middle; }
 .tableClass .tableClass-Page {height: 20px; margin: 0; padding: 0;}
 
+.querySet { margin: 5px; width: 94%; }

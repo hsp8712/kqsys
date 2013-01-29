@@ -4,17 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import net.oraro.bean.CheckinRecord;
 import net.oraro.bean.User;
 import net.oraro.dao.CheckinRecordDao;
 import net.oraro.db.DBUtil;
 import net.oraro.exception.DataAccessException;
+
+import org.apache.log4j.Logger;
 
 public class CheckinRecordDaoImpl implements CheckinRecordDao {
 	
@@ -46,6 +44,7 @@ public class CheckinRecordDaoImpl implements CheckinRecordDao {
 			ps.setTimestamp(2, new Timestamp(checkinRecord.getCheckTime().getTime()));
 			
 			isSuccess = ps.execute();
+			log.info(sql);
 		} catch (SQLException e) {
 			log.error(e.getMessage(), e);
 			throw new DataAccessException("数据访问异常.");

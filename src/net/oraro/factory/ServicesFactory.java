@@ -3,9 +3,11 @@ package net.oraro.factory;
 import net.oraro.service.CheckInService;
 import net.oraro.service.DailyRecordService;
 import net.oraro.service.LoginAndOutService;
+import net.oraro.service.TeamService;
 import net.oraro.service.impl.CheckInServiceImpl;
 import net.oraro.service.impl.DailyRecordServiceImpl;
 import net.oraro.service.impl.LoginAndOutServiceImpl;
+import net.oraro.service.impl.TeamServiceImpl;
 
 /**
  * 单例服务工厂
@@ -49,6 +51,15 @@ public class ServicesFactory {
 			dailyRecordService = new DailyRecordServiceImpl();
 		}
 		return dailyRecordService;
+	}
+	
+	/** 日考勤记录服务 */
+	private TeamService teamService;
+	public TeamService getTeamService() {
+		if(teamService == null) {
+			teamService = new TeamServiceImpl();
+		}
+		return teamService;
 	}
 	
 	

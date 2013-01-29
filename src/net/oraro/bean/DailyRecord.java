@@ -7,14 +7,14 @@ import java.util.Date;
  * @author 6261000301
  *
  */
-public class DailyRecord implements Cloneable{
+public class DailyRecord {
 	private Integer id;			// id
 	private User user;			// 用户
 	private Date date;			// 日期
 	private Date firstTime;		// 首次打卡时间
 	private Date lastTime;		// 最后一次打卡时间
 	private Date overTime;		// 加班开始时间	
-	private int overTimeHour;		// 加班时长小时数（不足30分钟计0，超过30分钟不足1小时，计1）
+	private float overTimeHour;		// 加班时长小时数（不足30分钟计0，超过30分钟不足1小时，计0.5）
 	public Integer getId() {
 		return id;
 	}
@@ -45,20 +45,18 @@ public class DailyRecord implements Cloneable{
 	public void setLastTime(Date lastTime) {
 		this.lastTime = lastTime;
 	}
-	public int getOverTimeHour() {
-		return overTimeHour;
-	}
-	public void setOverTimeHour(int overTimeHour) {
-		this.overTimeHour = overTimeHour;
-	}
 	public Date getOverTime() {
 		return overTime;
 	}
 	public void setOverTime(Date overTime) {
 		this.overTime = overTime;
 	}
-	@Override
-	public DailyRecord clone() throws CloneNotSupportedException {
-		return (DailyRecord)super.clone();
+	public float getOverTimeHour() {
+		return overTimeHour;
 	}
+	public void setOverTimeHour(float overTimeHour) {
+		this.overTimeHour = overTimeHour;
+	}
+	
+	
 }

@@ -39,7 +39,7 @@ public class DailyRecordServlet extends HttpServlet {
 			int pageNo = pageNoStr == null ? 0 : Integer.valueOf(pageNoStr);
 			Page<DailyRecord> page = service.getPageDailyRecords(pageNo);
 			request.setAttribute(ServletConstants.REQ_PAGE, page);
-			request.getRequestDispatcher("/daily_record_view.jsp").forward(request, response);
+			request.getRequestDispatcher("/page/daily_record_view.jsp").forward(request, response);
 			return;
 		case 1:		// 导出
 			
