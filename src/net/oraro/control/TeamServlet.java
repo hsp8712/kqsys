@@ -42,7 +42,7 @@ public class TeamServlet extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String opertype = request.getParameter("opertype");
+		String opertype = request.getParameter(ServletConstants.REQ_PARAM_OPERTYPE);
 		
 		if(Opertype.VIEW.equals(opertype)) {
 			view(request, response);

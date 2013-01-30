@@ -58,7 +58,7 @@ public class HTableTag extends BodyTagSupport {
 	/** 是否有分页数据 */
 	private boolean haveNoDatas;
 	
-	@Override
+	
 	public int doStartTag() throws JspException {
 		
 		// 赋初始值
@@ -95,7 +95,7 @@ public class HTableTag extends BodyTagSupport {
 		return EVAL_BODY_BUFFERED;
 	}
 	
-	@Override
+	
 	public int doAfterBody() throws JspException {
 		
 		finalJspString.append("<tr>");
@@ -132,7 +132,7 @@ public class HTableTag extends BodyTagSupport {
 		return SKIP_BODY;
 	}
 	
-	@Override
+	
 	public int doEndTag() throws JspException {
 
 		JspWriter out = this.bodyContent.getEnclosingWriter();

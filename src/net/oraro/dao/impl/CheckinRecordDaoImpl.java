@@ -18,7 +18,6 @@ public class CheckinRecordDaoImpl implements CheckinRecordDao {
 	
 	private Logger log = Logger.getLogger(CheckinRecordDaoImpl.class);
 	
-	@Override
 	public boolean insert(CheckinRecord checkinRecord)
 			throws DataAccessException {
 		
@@ -53,32 +52,32 @@ public class CheckinRecordDaoImpl implements CheckinRecordDao {
 		return isSuccess;
 	}
 
-	@Override
+	
 	public boolean update(CheckinRecord checkinRecord)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean delete(Integer id) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public List<CheckinRecord> queryAll() throws DataAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public boolean execute(String sql) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public List<CheckinRecord> executeQuery(String sql)
 			throws DataAccessException {
 		// TODO Auto-generated method stub

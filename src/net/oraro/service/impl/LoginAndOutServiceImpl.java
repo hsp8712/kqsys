@@ -30,6 +30,7 @@ public class LoginAndOutServiceImpl implements LoginAndOutService{
 			user = userDao.queryByAccountAndPassword(account, passwd);
 		} catch (DataAccessException e) {
 			log.error(e.getMessage());
+			throw new LoginAndOutException(e.getMessage());
 		}
 		
 		return user;

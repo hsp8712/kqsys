@@ -21,24 +21,24 @@ public class TeamDaoImpl implements TeamDao{
 	
 	private static Logger log = Logger.getLogger(TeamDaoImpl.class);
 
-	@Override
+	
 	public boolean insert(Team team) throws DataAccessException {
 		return false;
 	}
 
-	@Override
+	
 	public boolean update(Team team) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean delete(Integer id) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public List<Team> queryAll() throws DataAccessException {
 		
 		String sql = "select a.id as team_id, a.team_name, a.description, b.id as user_id, b.name, b.empno " +
@@ -83,20 +83,20 @@ public class TeamDaoImpl implements TeamDao{
 		return teams;
 	}
 
-	@Override
+	
 	public Team queryByAccountAndPassword(String account, String password)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public boolean execute(String sql) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public List<Team> executeQuery(String sql) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return null;

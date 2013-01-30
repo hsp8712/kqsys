@@ -17,17 +17,17 @@ import cn.huangshaoping.page.Page;
  */
 public class HTableBottomTag extends BodyTagSupport {
 	
-	@Override
+	
 	public int doStartTag() throws JspException {
 		return EVAL_BODY_BUFFERED;
 	}
 
-	@Override
+	
 	public int doAfterBody() throws JspException {
 		return SKIP_BODY;
 	}
 	
-	@Override
+	
 	public int doEndTag() throws JspException {
 		
 		// 获取父标签对象

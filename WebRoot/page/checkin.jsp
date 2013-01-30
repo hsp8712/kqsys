@@ -33,7 +33,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-  	<form action="servlet/CheckinServlet" method="post" >
+  	<form action="servlet/CheckinServlet?opertype=checkin" method="post" >
   		<table class="tableClass" cellspacing="1" >
   			<tr>
   				<td>姓名</td>

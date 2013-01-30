@@ -18,30 +18,30 @@ public class RightDaoImpl implements RightDao{
 	
 	private Logger log = Logger.getLogger(RightDaoImpl.class);
 	
-	@Override
+	
 	public boolean insert(Right right) throws DataAccessException {
 		return false;
 	}
 
-	@Override
+	
 	public boolean update(Right right) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean delete(Integer id) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public List<Right> queryAll() throws DataAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public List<Right> queryByUserId(Integer userId) throws DataAccessException {
 		
 		if(userId == null) {
@@ -80,13 +80,13 @@ public class RightDaoImpl implements RightDao{
 		return rights;
 	}
 
-	@Override
+	
 	public boolean execute(String sql) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public List<Right> executeQuery(String sql) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return null;

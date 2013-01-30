@@ -29,7 +29,7 @@ public class TeamServiceImpl implements TeamService{
 		return new Page<Team>(teams, Constants.PAGE_SIZE, pageNo);
 	}
 
-	@Override
+	
 	public List<User> getNoTeamUsers() {
 		String sql = "select * from kq_user where team_id is null";
 		
@@ -43,7 +43,7 @@ public class TeamServiceImpl implements TeamService{
 		return users;
 	}
 
-	@Override
+	
 	public boolean addTeam(Team team) {
 		
 		

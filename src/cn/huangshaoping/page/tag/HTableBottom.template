@@ -1,7 +1,7 @@
 <table class="tableClass-Page" >
 	<tr>
 		<td>
-			ÂÖ±Ôºö&nbsp;#totalSize&nbsp;Êù°&nbsp;&nbsp;&nbsp;Á¨¨&nbsp;#currentPageNo/#totalPageNum&nbsp;È°µ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			π≤£∫&nbsp;#totalSize&nbsp;Ãı&nbsp;&nbsp;&nbsp;µ⁄&nbsp;#currentPageNo/#totalPageNum&nbsp;“≥&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<img src="/kqsys/img/btn_firstPage.gif" onclick="HPageTable.go2page('#formName', #firstPageNo)" />&nbsp;&nbsp;
 			<img src="/kqsys/img/btn_prevPage.gif" onclick="HPageTable.go2page('#formName', #prePageNo)" />&nbsp;&nbsp;
 			<img src="/kqsys/img/btn_nextPage.gif" onclick="HPageTable.go2page('#formName', #nextPageNo)" />&nbsp;&nbsp;

@@ -19,7 +19,7 @@ public class UserDaoImpl implements UserDao{
 	
 	private static Logger log = Logger.getLogger(UserDaoImpl.class);
 	
-	@Override
+	
 	public boolean insert(User user) throws DataAccessException {
 		
 		boolean execSuccess = false;
@@ -56,29 +56,29 @@ public class UserDaoImpl implements UserDao{
 		return execSuccess;
 	}
 
-	@Override
+	
 	public boolean update(User user) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean delete(Integer id) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public List<User> queryAll() throws DataAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public User queryByAccountAndPassword(String account, String password) throws DataAccessException {
 		
 		String sql = "select u.account, u.empno, u.id, u.name, u.team_id, t.team_name, t.description " +
-				"from kq_user u, kq_team t where u.team_id=t.id and u.account=? and u.password=?";
+				"from kq_user u left join kq_team t on u.team_id=t.id where u.account=? and u.password=?";
 		
 		User user = null;
 		Connection conn = null;
@@ -100,7 +100,7 @@ public class UserDaoImpl implements UserDao{
 				user.setName(rs.getString("name"));
 				
 				Team team = new Team();
-				team.setId(rs.getInt("team_id"));
+				team.setId((Integer)rs.getObject("team_id"));
 				team.setTeamName(rs.getString("team_name"));
 				team.setDescription(rs.getString("description"));
 				user.setTeam(team);
@@ -117,13 +117,13 @@ public class UserDaoImpl implements UserDao{
 		return user;
 	}
 
-	@Override
+	
 	public boolean execute(String sql) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public List<User> executeQuery(String sql) throws DataAccessException {
 		
 		User user = null;

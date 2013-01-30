@@ -20,25 +20,25 @@ public class DailyRecordDaoImpl implements DailyRecordDao {
 	
 	private Logger log = Logger.getLogger(DailyRecordDaoImpl.class);
 
-	@Override
+	
 	public boolean insert(DailyRecord dailyRecord) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean update(DailyRecord dailyRecord) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean delete(Integer id) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public List<DailyRecord> queryAll() throws DataAccessException {
 		
 		String sql = "select * from kq_dailyrecord";
@@ -75,13 +75,13 @@ public class DailyRecordDaoImpl implements DailyRecordDao {
 		return dailyRecords;
 	}
 
-	@Override
+	
 	public boolean execute(String sql) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public List<DailyRecord> executeQuery(String sql)
 			throws DataAccessException {
 		// TODO Auto-generated method stub

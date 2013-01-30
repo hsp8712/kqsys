@@ -1,12 +1,14 @@
 
+create database if not exists kqsys character set utf8;
+
+use kqsys;
+
 alter table kq_checkinrecord drop foreign key fk_kq_checkinrecord_1;
 alter table kq_dailyrecord   drop foreign key fk_kq_dailyrecord_1;
 alter table kq_team          drop foreign key fk_kq_team_1;
 alter table kq_user          drop foreign key fk_kq_user_1;
 alter table kq_user_right    drop foreign key fk_kq_user_right_2;
 alter table kq_user_right    drop foreign key fk_kq_user_right_1;
-
-commit;
 
 /* 用户表 */
 drop table if exists kq_user;
@@ -18,8 +20,8 @@ create table kq_user
    name     varchar(50)    not null, 
    account   varchar(50)    not null unique,
    password   varchar(100)	not null,
-   team_id		int	null
-);
+   team_id		int	 null
+) engine=innodb;
 
 
 /* 权限表 */
@@ -31,7 +33,7 @@ create table kq_right
    right_name     varchar(50)    not null, 
    right_link   varchar(100)    not null
 	
-);
+) engine=innodb;
 
 /* 用户表-权限表:中间表 */
 drop table if exists kq_user_right;
@@ -41,7 +43,7 @@ create table kq_user_right
    id     int       primary key auto_increment, 
    user_id     int    not null,     
    right_id   int    not null      
-);
+) engine=innodb;
 
 alter table kq_user_right add constraint fk_kq_user_right_1 foreign key(user_id) references kq_user(id) on delete cascade;
 alter table kq_user_right add constraint fk_kq_user_right_2 foreign key(right_id) references kq_right(id) on delete cascade;
@@ -55,7 +57,7 @@ create table kq_team
    team_name     varchar(50)    not null, 
    description   varchar(100)    null,  
    manager_id   int	 null
-);
+) engine=innodb;
 
 
 alter table kq_user add constraint fk_kq_user_1 foreign key(team_id) references kq_team(id);
@@ -73,7 +75,7 @@ create table kq_dailyrecord
    last_time	time null,
    over_time	time null,	
    over_time_hour  decimal(3,1) null
-);
+) engine=innodb;
 
 alter table kq_dailyrecord add constraint fk_kq_dailyrecord_1 foreign key(user_id) references kq_user(id) on delete cascade;
 
@@ -86,7 +88,7 @@ create table kq_checkinrecord
    id     int       primary key auto_increment, 
    user_id     int    not null,
    check_time	datetime null
-);
+) engine=innodb;
 
 alter table kq_checkinrecord add constraint fk_kq_checkinrecord_1 foreign key(user_id) references kq_user(id) on delete cascade;
 
@@ -98,8 +100,6 @@ create table kq_config
 	id int primary key auto_increment, 
 	config_name varchar(50) not null,
 	config_value varchar(100) null
-);
-
-commit;
+) engine=innodb;
 
 
