@@ -12,8 +12,8 @@ import javax.servlet.http.HttpSession;
 import net.oraro.bean.Right;
 import net.oraro.bean.User;
 import net.oraro.exception.LoginAndOutException;
-import net.oraro.factory.ServicesFactory;
 import net.oraro.service.LoginAndOutService;
+import net.oraro.service.ServicesFactory;
 import net.oraro.web.WebUtil;
 
 import org.apache.log4j.Logger;

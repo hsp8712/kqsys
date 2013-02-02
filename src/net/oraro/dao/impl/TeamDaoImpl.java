@@ -4,14 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.oraro.bean.Team;
 import net.oraro.bean.User;
 import net.oraro.dao.TeamDao;
-import net.oraro.dao.UserDao;
 import net.oraro.db.DBUtil;
 import net.oraro.exception.DataAccessException;
 
@@ -21,24 +19,6 @@ public class TeamDaoImpl implements TeamDao{
 	
 	private static Logger log = Logger.getLogger(TeamDaoImpl.class);
 
-	
-	public boolean insert(Team team) throws DataAccessException {
-		return false;
-	}
-
-	
-	public boolean update(Team team) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public boolean delete(Integer id) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
 	public List<Team> queryAll() throws DataAccessException {
 		
 		String sql = "select a.id as team_id, a.team_name, a.description, b.id as user_id, b.name, b.empno " +
@@ -66,7 +46,7 @@ public class TeamDaoImpl implements TeamDao{
 					User user = new User();
 					user.setId((Integer) user_id_obj);
 					user.setEmpno(rs.getString("empno"));
-					user.setName(rs.getString("team_name"));
+					user.setName(rs.getString("name"));
 					team.setManager(user);
 				}
 				teams.add(team);
@@ -83,25 +63,44 @@ public class TeamDaoImpl implements TeamDao{
 		return teams;
 	}
 
-	
-	public Team queryByAccountAndPassword(String account, String password)
-			throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+	public Team queryById(Integer id) throws DataAccessException {
+		
+		if(id == null) {
+			throw new NullPointerException("Team id is null.");
+		}
+		
+		String sql = "select id,team_name,description,manager_id from kq_team where id=" + id.toString();
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		Team team = null;
+		try {
+			conn = DBUtil.getConnection();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			log.info(sql);
+			
+			team = new Team();
+			if(rs.next()) {
+				team.setId(id);
+				team.setTeamName(rs.getString("team_name"));
+				team.setDescription(rs.getString("description"));
+				
+				User user = new User();
+				user.setId(rs.getInt("manager_id"));
+				team.setManager(user);
+			}
+			
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+			throw new DataAccessException("数据库异常.");
+		} finally {
+			DBUtil.release(rs, ps, conn);
+		}
+		
+		return team;
 	}
-
-	
-	public boolean execute(String sql) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public List<Team> executeQuery(String sql) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
 
 }

@@ -8,5 +8,5 @@ package net.oraro.common;
 public class Constants {
 	
 	/** 分页-每页显示记录数 */
-	public static final int PAGE_SIZE = 15;
+	public static final int PAGE_SIZE = 10;
 }

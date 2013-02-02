@@ -1,10 +1,9 @@
 package net.oraro.service;
 
-import java.util.List;
-
-import net.oraro.bean.Team;
-import net.oraro.bean.User;
-import cn.huangshaoping.page.Page;
+import net.oraro.service.bean.evt.TeamEvt;
+import net.oraro.service.bean.evt.TeamMemEvt;
+import net.oraro.service.bean.result.BeanResult;
+import net.oraro.service.bean.result.Result;
 
 /**
  * 日考勤记录服务
@@ -14,23 +13,18 @@ import cn.huangshaoping.page.Page;
 public interface TeamService {
 	
 	/**
-	 * 获取日考勤分页记录
-	 * @param pageNo
+	 * 组管理
+	 * OperateEvt.opertype: 1、新增；2、修改；3、删除
+	 * @param evt
 	 * @return
 	 */
-	Page<Team> getAllTeams(int pageNo);
+	BeanResult teamManage(TeamEvt evt);
 	
 	/**
-	 * 获取未分配组的用户list集合
+	 * 组成员管理
+	 * OperateEvt.opertype: 1、添加成员；2、移除成员
+	 * @param evt
 	 * @return
 	 */
-	List<User> getNoTeamUsers();
-	
-	/**
-	 * 新增组
-	 * @param team
-	 * @return
-	 */
-	boolean addTeam(Team team);
-	
+	Result teamMemManage(TeamMemEvt evt);
 }

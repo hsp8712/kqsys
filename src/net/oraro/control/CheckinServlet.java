@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.oraro.bean.User;
-import net.oraro.factory.ServicesFactory;
 import net.oraro.service.CheckInService;
+import net.oraro.service.ServicesFactory;
 
 import org.apache.log4j.Logger;
 

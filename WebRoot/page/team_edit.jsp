@@ -35,25 +35,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-  	<form action="servlet/TeamServlet" method="post" >
+  	<form action="servlet/TeamServlet?opertype=save" method="post" >
+  		<input type="hidden" name="id" value="${team.id }" />
   		<table class="tableClass" cellspacing="1" >
   			<tr>
+  				<td>操作</td>
+  				<td>${empty team.id ? '新增' : '修改'}组</td>
+  			</tr>
+  			<tr>
   				<td>组名</td>
-  				<td><input type="text" name="teamName" /></td>
+  				<td><input type="text" name="teamName" value="${team.teamName }" /></td>
   			</tr>
   			<tr>
   				<td>描述</td>
   				<td>
-  					<textarea name="description" rows="4" cols="30"></textarea>
+  					<textarea name="description" rows="4" cols="30">${team.description }</textarea>
   				</td>
   			</tr>
   			<tr>
   				<td>管理员</td>
   				<td>
-  					<select>
+  					<select name="manager">
   						<option value="" >-- 请选择 --</option>
   						<c:forEach var="user" items="${noTeamUsers }">
-  							<option value="${user.id }" >${user.name }</option>
+  							<option value="${user.id }" ${team.manager.id eq user.id ? 'selected' : '' } >
+  								${user.name }
+  							</option>
   						</c:forEach>
   					</select>
   				</td>

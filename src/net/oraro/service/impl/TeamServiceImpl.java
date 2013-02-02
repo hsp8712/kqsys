@@ -1,54 +1,66 @@
 package net.oraro.service.impl;
 
-import java.util.List;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
-import net.oraro.bean.Team;
-import net.oraro.bean.User;
-import net.oraro.common.Constants;
-import net.oraro.dao.DaoFactory;
-import net.oraro.exception.DataAccessException;
+import net.oraro.db.CallableParam;
+import net.oraro.db.DBUtil;
 import net.oraro.service.TeamService;
+import net.oraro.service.bean.evt.TeamEvt;
+import net.oraro.service.bean.evt.TeamMemEvt;
+import net.oraro.service.bean.result.BeanResult;
+import net.oraro.service.bean.result.Result;
+import net.oraro.service.bean.result.ResultUtil;
+import net.oraro.util.StringUtil;
 
 import org.apache.log4j.Logger;
-
-import cn.huangshaoping.page.Page;
 
 public class TeamServiceImpl implements TeamService{
 	
 	private Logger log = Logger.getLogger(TeamServiceImpl.class);
-	
-	public Page<Team> getAllTeams(int pageNo) {
+
+	public BeanResult teamManage(TeamEvt evt) {
 		
-		List<Team> teams = null;
-		try {
-			teams = DaoFactory.getInstance().getTeamDao().queryAll();
-		} catch (DataAccessException e) {
-			log.error(e.getMessage());
+		if(evt == null) {
+			throw new NullPointerException("Param evt can not be null.");
 		}
 		
-		return new Page<Team>(teams, Constants.PAGE_SIZE, pageNo);
-	}
-
-	
-	public List<User> getNoTeamUsers() {
-		String sql = "select * from kq_user where team_id is null";
+		Map<Integer, CallableParam> paramMap = new HashMap<Integer, CallableParam>();
+		paramMap.put(1, new CallableParam(CallableParam.TYPE_IN, evt.getOpertype()));
+		paramMap.put(2, new CallableParam(CallableParam.TYPE_IN, evt.getTeamId()));
+		paramMap.put(3, new CallableParam(CallableParam.TYPE_IN, evt.getTeamName()));
+		paramMap.put(4, new CallableParam(CallableParam.TYPE_IN, evt.getDescription()));
+		paramMap.put(5, new CallableParam(CallableParam.TYPE_IN, evt.getManagerId()));
+		paramMap.put(6, new CallableParam(CallableParam.TYPE_OUT, null));
+		paramMap.put(7, new CallableParam(CallableParam.TYPE_OUT, ""));
 		
-		List<User> users = null;
+		BeanResult bResult = new BeanResult();
+		Map<Integer, Object> outParamMap = null;
 		try {
-			users = DaoFactory.getInstance().getUserDao().executeQuery(sql);
-		} catch (DataAccessException e) {
+			outParamMap = DBUtil.execProcedure("kqp_team_manage", paramMap);
+		} catch (SQLException e) {
 			log.error(e.getMessage());
+			bResult.setResultCode("1000");
+		}
+		bResult.setResultCode(String.valueOf(outParamMap.get(6)));
+		
+		String id = String.valueOf(outParamMap.get(7));
+		Integer idInt = null;
+		if(!StringUtil.isEmpty(id)) {
+			try {
+				idInt = Integer.valueOf(id);
+			} catch (NumberFormatException e) {
+			}
 		}
 		
-		return users;
+		bResult.setId(idInt);
+		ResultUtil.updateResultDesc(bResult);
+		return bResult;
 	}
 
-	
-	public boolean addTeam(Team team) {
-		
-		
-		
-		return false;
+	public Result teamMemManage(TeamMemEvt evt) {
+		return null;
 	}
 
 }

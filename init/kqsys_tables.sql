@@ -16,11 +16,11 @@ drop table if exists kq_user;
 create table kq_user
 (
    id     int       primary key auto_increment,
-   empno  varchar(20)	null unique, 
-   name     varchar(50)    not null, 
-   account   varchar(50)    not null unique,
-   password   varchar(100)	not null,
-   team_id		int	 null
+   empno  varchar(20)	null unique, 				-- 工号
+   name     varchar(50)    not null, 				-- 姓名
+   account   varchar(50)    not null unique,		-- 登录账号
+   password   varchar(100)	not null,				-- 登录密码
+   team_id		int	 null							-- 所属组
 ) engine=innodb;
 
 
@@ -30,8 +30,8 @@ drop table if exists kq_right;
 create table kq_right
 (
    id     int       primary key auto_increment, 
-   right_name     varchar(50)    not null, 
-   right_link   varchar(100)    not null
+   right_name     varchar(50)    not null, 		-- 权限菜单名称
+   right_link   varchar(100)    not null		-- 权限菜单链接
 	
 ) engine=innodb;
 
@@ -54,13 +54,13 @@ drop table if exists kq_team;
 create table kq_team
 (
    id     int       primary key auto_increment,
-   team_name     varchar(50)    not null, 
-   description   varchar(100)    null,  
-   manager_id   int	 null
+   team_name     varchar(50)    not null, 	-- 组名称
+   description   varchar(100)    null,  	-- 描述
+   manager_id   int	 null					-- 管理员用户id
 ) engine=innodb;
 
 
-alter table kq_user add constraint fk_kq_user_1 foreign key(team_id) references kq_team(id);
+alter table kq_user add constraint fk_kq_user_1 foreign key(team_id) references kq_team(id) on delete set null;
 alter table kq_team add constraint fk_kq_team_1 foreign key(manager_id) references kq_user(id);
 
 /* 日考勤记录 */
@@ -70,11 +70,11 @@ create table kq_dailyrecord
 (
    id     int       primary key auto_increment, 
    user_id     int    not null, 
-   record_date   date    not null,
-   first_time	time null,
-   last_time	time null,
-   over_time	time null,	
-   over_time_hour  decimal(3,1) null
+   record_date   date    not null,		-- 记录日期
+   first_time	time null,				-- 首次打卡时间
+   last_time	time null,				-- 最后打卡时间
+   over_time	time null,				-- 加班开始时间
+   over_time_hour  decimal(3,1) null	-- 加班时长，精确到0.5h
 ) engine=innodb;
 
 alter table kq_dailyrecord add constraint fk_kq_dailyrecord_1 foreign key(user_id) references kq_user(id) on delete cascade;
@@ -86,8 +86,8 @@ drop table if exists kq_checkinrecord;
 create table kq_checkinrecord
 (
    id     int       primary key auto_increment, 
-   user_id     int    not null,
-   check_time	datetime null
+   user_id     int    not null,			-- 用户id
+   check_time	datetime null			-- 打卡日期时间
 ) engine=innodb;
 
 alter table kq_checkinrecord add constraint fk_kq_checkinrecord_1 foreign key(user_id) references kq_user(id) on delete cascade;
@@ -98,8 +98,17 @@ drop table if exists kq_config;
 create table kq_config
 (
 	id int primary key auto_increment, 
-	config_name varchar(50) not null,
-	config_value varchar(100) null
+	config_name varchar(50) not null,	-- 配置项名称
+	config_value varchar(100) null		-- 配置项值
 ) engine=innodb;
 
+
+/* 操作结果返回码字典表 */
+drop table if exists kq_result_code;
+
+create table kq_result_code
+(
+	result_code varchar(4) primary key, -- 结果返回码
+	result_desc varchar(200) not null	-- 结果描述
+) engine=innodb;
 

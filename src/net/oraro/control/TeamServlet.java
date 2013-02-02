@@ -10,10 +10,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.oraro.bean.Team;
 import net.oraro.bean.User;
-import net.oraro.factory.ServicesFactory;
+import net.oraro.common.Constants;
+import net.oraro.dao.DaoFactory;
+import net.oraro.exception.DataAccessException;
+import net.oraro.service.ServicesFactory;
+import net.oraro.service.bean.evt.TeamEvt;
+import net.oraro.service.bean.result.BeanResult;
+import net.oraro.util.StringUtil;
+
+import org.apache.log4j.Logger;
+
 import cn.huangshaoping.page.Page;
 
 public class TeamServlet extends HttpServlet {
+	
+	private Logger log = Logger.getLogger(TeamServlet.class);
 
 	/**
 	 * The doGet method of the servlet. <br>
@@ -52,18 +63,45 @@ public class TeamServlet extends HttpServlet {
 			modView(request, response);
 		} else if(Opertype.SAVE.equals(opertype)) {
 			save(request, response);
+		} else if(Opertype.DELETE.equals(opertype)) {
+			delete(request, response);
 		} else {
 			throw new ServletException("请求的操作不存在<opertype=" + opertype + ">.");
 		}
 		return;
 	}
 	
+	private void delete(HttpServletRequest request, HttpServletResponse response) 
+		throws ServletException, IOException {
+		String id = request.getParameter("id");
+		if(StringUtil.isEmpty(id)) {
+			throw new ServletException("Modify team: team id cannot be null or empty.");
+		}
+		
+		TeamEvt evt = new TeamEvt();
+		evt.setTeamId(Integer.valueOf(id));
+		evt.setOpertype(3);
+		
+		BeanResult bResult = ServicesFactory.instance().getTeamService().teamManage(evt);
+		request.setAttribute(ServletConstants.REQ_MSG, bResult.getResultDesc());
+		
+		view(request, response);
+	}
+
 	private void view(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
 		String pageNoStr = request.getParameter("pageNo");
 		int pageNo = pageNoStr == null ? 0 : Integer.valueOf(pageNoStr);
-		Page<Team> page = ServicesFactory.instance().getTeamService().getAllTeams(pageNo);
+		
+		List<Team> teams = null;
+		try {
+			teams = DaoFactory.getInstance().getTeamDao().queryAll();
+		} catch (DataAccessException e) {
+			log.error(e.getMessage());
+		}
+		
+		Page<Team> page = new Page<Team>(teams, Constants.PAGE_SIZE, pageNo);
 		request.setAttribute(ServletConstants.REQ_PAGE, page);
 		request.getRequestDispatcher("/page/team_view.jsp").forward(request, response);
 	}
@@ -81,9 +119,30 @@ public class TeamServlet extends HttpServlet {
 		
 		// 获取待修改记录的id
 		String id = request.getParameter("id");
+		if(StringUtil.isEmpty(id)) {
+			throw new ServletException("Modify team: team id cannot be null or empty.");
+		}
 		
+		Team team = null;
+		try {
+			team = DaoFactory.getInstance().getTeamDao().queryById(Integer.valueOf(id));
+		} catch (DataAccessException e1) {
+			throw new ServletException(e1.getMessage());
+		}
 		
+		request.setAttribute("team", team);
 		
+		// 获取未被分配的用户或该组成员用户
+		String sql = "select * from kq_user where team_id is null or team_id=" + id;
+		List<User> users = null;
+		try {
+			users = DaoFactory.getInstance().getUserDao().executeQuery(sql);
+		} catch (DataAccessException e) {
+			log.error(e.getMessage());
+		}
+		
+		request.setAttribute("noTeamUsers", users);
+		request.getRequestDispatcher("/page/team_edit.jsp").forward(request, response);
 	}
 
 	/**
@@ -93,12 +152,46 @@ public class TeamServlet extends HttpServlet {
 	 */
 	private void save(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
+		
 		// 获取参数
 		String teamName = request.getParameter("teamName");
-		String managerId = request.getParameter("manager");
+		
+		if(StringUtil.isEmpty(teamName)) {
+			request.setAttribute(ServletConstants.REQ_MSG, "组名不能为空");
+			addView(request, response);
+			return;
+		}
+		
 		String description = request.getParameter("description");
+		String managerId = request.getParameter("manager");
+		Integer managerIdInt = ( StringUtil.isEmpty(managerId) ? null : Integer.valueOf(managerId) );
+		
+		TeamEvt evt = new TeamEvt();
+		evt.setDescription(description);
+		evt.setManagerId(managerIdInt);
+		evt.setTeamName(teamName);
 		
 		
+		// 获取待修改记录的id
+		String id = request.getParameter("id");
+		
+		if(id == null) {
+			// id为null表示新增保存
+			evt.setOpertype(1);	
+		} else {
+			// 修改保存
+			evt.setTeamId(Integer.valueOf(id));
+			evt.setOpertype(2);
+		}
+		
+		BeanResult bResult = ServicesFactory.instance().getTeamService().teamManage(evt);
+		request.setAttribute(ServletConstants.REQ_MSG, bResult.getResultDesc());
+		
+		if(id == null) {
+			addView(request, response);
+		} else {
+			modView(request, response);
+		}
 	}
 
 	/**
@@ -111,8 +204,15 @@ public class TeamServlet extends HttpServlet {
 	private void addView(HttpServletRequest request,
 			HttpServletResponse response) 
 			throws ServletException, IOException {
+		
 		// 获取未被分配的用户集合
-		List<User> users = ServicesFactory.instance().getTeamService().getNoTeamUsers();
+		String sql = "select * from kq_user where team_id is null";
+		List<User> users = null;
+		try {
+			users = DaoFactory.getInstance().getUserDao().executeQuery(sql);
+		} catch (DataAccessException e) {
+			log.error(e.getMessage());
+		}
 		
 		request.setAttribute("noTeamUsers", users);
 		request.getRequestDispatcher("/page/team_edit.jsp").forward(request, response);
@@ -123,6 +223,7 @@ public class TeamServlet extends HttpServlet {
 		public static final String ADD_VIEW = "add_view";	// 新增界面
 		public static final String MOD_VIEW = "mod_view";	// 修改界面
 		public static final String SAVE = "save";			// 保存
+		public static final String DELETE = "delete";		// 保存
 	}
 
 }

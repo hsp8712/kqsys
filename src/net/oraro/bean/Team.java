@@ -1,5 +1,7 @@
 package net.oraro.bean;
 
+import java.util.List;
+
 /**
  * 组
  * @author 6261000301
@@ -10,6 +12,8 @@ public class Team {
 	private String 	teamName;		// 组名
 	private String description; 	// 描述
 	private User manager;		// 组管理员
+	private List<User> members;		// 组员
+	
 	public Integer getId() {
 		return id;
 	}
@@ -33,6 +37,12 @@ public class Team {
 	}
 	public void setManager(User manager) {
 		this.manager = manager;
+	}
+	public List<User> getMembers() {
+		return members;
+	}
+	public void setMembers(List<User> members) {
+		this.members = members;
 	}
 	
 }

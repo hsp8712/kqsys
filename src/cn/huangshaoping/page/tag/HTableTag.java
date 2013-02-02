@@ -192,10 +192,26 @@ public class HTableTag extends BodyTagSupport {
 			tableBottomHtml = tableBottomHtml.replaceAll("#totalSize", String.valueOf(page.getTotalSize()));			// 总记录数
 			tableBottomHtml = tableBottomHtml.replaceAll("#currentPageNo", String.valueOf(page.getPageNo() + 1));		// 当前页号
 			tableBottomHtml = tableBottomHtml.replaceAll("#totalPageNum", String.valueOf(page.getTotalPage()));		// 总页数
-			tableBottomHtml = tableBottomHtml.replaceAll("#firstPageNo", page.getPageNo() == 0 ? "-1" : "0");		// 总页数
-			tableBottomHtml = tableBottomHtml.replaceAll("#prePageNo", String.valueOf(page.getPageNo() == 0 ? -1 : ( page.getPageNo() - 1) ));		// 总页数
-			tableBottomHtml = tableBottomHtml.replaceAll("#nextPageNo", String.valueOf(page.getPageNo() == ( page.getTotalPage() - 1 ) ? -1 : ( page.getPageNo() + 1 ) ));		// 总页数
-			tableBottomHtml = tableBottomHtml.replaceAll("#lastPageNo", String.valueOf(page.getPageNo() == ( page.getTotalPage() - 1 ) ? -1 : ( page.getTotalPage() - 1 ) ));		// 总页数
+			
+			int pageNo = page.getPageNo();
+			int totalPage = page.getTotalPage();
+			tableBottomHtml = tableBottomHtml.replaceAll("#firstPageNo", pageNo == 0 ? "-1" : "0");		// 首页
+			tableBottomHtml = tableBottomHtml.replaceAll("#firstStyle", pageNo == 0 ? "" : "cursor:pointer;");
+			
+			tableBottomHtml = tableBottomHtml.replaceAll("#prePageNo", 
+					pageNo == 0 ? "-1" : (pageNo - 1) + "");											// 上页
+			tableBottomHtml = tableBottomHtml.replaceAll("#preStyle", 
+					pageNo == 0 ? "" : "cursor:pointer;");
+			
+			tableBottomHtml = tableBottomHtml.replaceAll("#nextPageNo", 
+					pageNo == ( totalPage - 1 ) ? "-1" : (pageNo + 1) + "");							// 下页
+			tableBottomHtml = tableBottomHtml.replaceAll("#nextStyle", 
+					pageNo == ( totalPage - 1 ) ? "" : "cursor:pointer;");
+			
+			tableBottomHtml = tableBottomHtml.replaceAll("#lastPageNo", 
+					pageNo == ( totalPage - 1 ) ? "-1" : (totalPage - 1) + "");							// 最后页
+			tableBottomHtml = tableBottomHtml.replaceAll("#lastStyle", 
+					pageNo == ( totalPage - 1 ) ? "" : "cursor:pointer;");
 		}
 		
 		return tableBottomHtml;

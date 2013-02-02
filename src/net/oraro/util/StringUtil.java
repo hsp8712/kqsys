@@ -10,6 +10,10 @@ public class StringUtil {
 	public static boolean isEmpty(String string) {
 		if(string == null) 
 			return true;
-		return string.length() <= 0;
+		if(string.length() <= 0) {
+			return true;
+		}
+		
+		return string.matches("^[ \\t]*$");
 	}
 }
