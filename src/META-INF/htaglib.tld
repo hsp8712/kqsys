@@ -39,5 +39,9 @@
 	    	<name>title</name>
 	    	<required>false</required>
 	    </attribute>
+	    <attribute>
+	    	<name>cssClass</name>
+	    	<required>false</required>
+	    </attribute>
     </tag>
 </taglib>

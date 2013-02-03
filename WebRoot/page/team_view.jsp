@@ -27,6 +27,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="jquery-easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="scripts/common.js"></script>
 	<script type="text/javascript" src="scripts/page.js"></script>
+	<style type="text/css">
+		.operate{ width: 150px; }
+	</style>
 	<script type="text/javascript">
 		$(function(){
 			showMsg('${msg }');
@@ -34,13 +37,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
 		
 		function edit(id) {
-			window.location.href="<%=basePath%>/servlet/TeamServlet?opertype=mod_view&id=" + id;
+			window.location.href="<%=basePath%>servlet/TeamServlet?opertype=mod_view&id=" + id;
 		}
 		
 		function del(id, teamName) {
 			if(window.confirm("确定删除\"" + teamName + "\"")) {
-				window.location.href="<%=basePath%>/servlet/TeamServlet?opertype=delete&id=" + id;
+				window.location.href="<%=basePath%>servlet/TeamServlet?opertype=delete&id=" + id;
 			}
+		}
+		
+		function memView(id) {
+			window.location.href="<%=basePath%>servlet/TeamServlet?opertype=mem_view&id=" + id;
 		}
 	</script>
   </head>
@@ -53,9 +60,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  		<H:tablefield title="组名" >${team.teamName }</H:tablefield>
 			<H:tablefield title="组管理员" >${team.manager.name }</H:tablefield>
 			<H:tablefield title="描述" >${team.description }</H:tablefield>
-			<H:tablefield title="操作" >
-				<a href="javascript: edit('${team.id }')" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">编辑</a>
-				<a href="javascript: del('${team.id }','${team.teamName }')" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>
+			<H:tablefield title="操作" cssClass="operate" >
+				<a href="javascript: edit('${team.id }')" >编辑</a>&nbsp;|
+				<a href="javascript: del('${team.id }','${team.teamName }')" >删除</a>&nbsp;|
+				<a href="javascript: memView('${team.id }')" >成员管理</a>
 			</H:tablefield>
 	  	</H:table>
 	  	</form>

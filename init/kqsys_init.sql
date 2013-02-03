@@ -34,6 +34,8 @@ insert into kq_user_right values(null,1,3);
 insert into kq_user_right values(null,3,3);
 
 
+delete from kq_result_code;
+
 /* 操作结果返回码字典表 */
 insert into kq_result_code values('0000', '成功');
 
@@ -41,8 +43,12 @@ insert into kq_result_code values('1000', '执行过程异常');
 insert into kq_result_code values('1001', '必选参数为空');
 insert into kq_result_code values('1002', '参数格式错误');
 
-insert into kq_result_code values('2001', '用户不存在或已归属其他组');
+insert into kq_result_code values('2001', '用户已归属其他组');
 insert into kq_result_code values('2002', '组不存在');
+insert into kq_result_code values('2003', '用户已归属当前组');
+insert into kq_result_code values('2004', '用户不属于当前组');
+
+insert into kq_result_code values('3001', '用户不存在');
 
 commit;
 

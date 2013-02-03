@@ -21,6 +21,9 @@ public class HTableFieldTag extends BodyTagSupport {
 	/** 标题 */
 	private String title;
 	
+	/** Css style class */
+	private String cssClass;
+	
 	
 	public int doStartTag() throws JspException {
 		
@@ -60,7 +63,9 @@ public class HTableFieldTag extends BodyTagSupport {
 		}
 			
 		try {
-			out.append("<td>");
+			out.append("<td class=\"");
+			out.append(cssClass);
+			out.append("\" >");
 			out.append(currentBodyContent);
 			out.append("</td>");
 		} catch (IOException e) {
@@ -73,6 +78,8 @@ public class HTableFieldTag extends BodyTagSupport {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
-	
+
+	public void setCssClass(String cssClass) {
+		this.cssClass = cssClass;
+	}
 }

@@ -2,6 +2,7 @@ package net.oraro.control;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,10 +13,13 @@ import net.oraro.bean.Team;
 import net.oraro.bean.User;
 import net.oraro.common.Constants;
 import net.oraro.dao.DaoFactory;
+import net.oraro.db.DBUtil;
 import net.oraro.exception.DataAccessException;
 import net.oraro.service.ServicesFactory;
 import net.oraro.service.bean.evt.TeamEvt;
+import net.oraro.service.bean.evt.TeamMemEvt;
 import net.oraro.service.bean.result.BeanResult;
+import net.oraro.service.bean.result.Result;
 import net.oraro.util.StringUtil;
 
 import org.apache.log4j.Logger;
@@ -65,12 +69,85 @@ public class TeamServlet extends HttpServlet {
 			save(request, response);
 		} else if(Opertype.DELETE.equals(opertype)) {
 			delete(request, response);
+		} else if(Opertype.MEM_VIEW.equals(opertype)) {
+			memView(request, response);
+		} else if(Opertype.MEM_ADD.equals(opertype)) {
+			memAdd(request, response);
+		} else if(Opertype.MEM_REMOVE.equals(opertype)) {
+			memRemove(request, response);
 		} else {
 			throw new ServletException("请求的操作不存在<opertype=" + opertype + ">.");
 		}
 		return;
 	}
 	
+	private void memView(HttpServletRequest request, HttpServletResponse response) 
+		throws ServletException, IOException {
+		String teamId = request.getParameter("id");
+		if(StringUtil.isEmpty(teamId)) {
+			throw new ServletException("Modify team: team id cannot be null or empty.");
+		}
+		
+		Team team = null;
+		try {
+			team = DaoFactory.getInstance().getTeamDao().queryById(Integer.valueOf(teamId));
+		} catch (DataAccessException e1) {
+			throw new ServletException(e1.getMessage());
+		}
+		request.setAttribute("team", team);
+		
+		// 查询teamId组成员用户list
+		String sqlmem = "select id, name from kq_user where team_id=" + teamId;
+		List<Map<String, String>> memUsers = DBUtil.executeQuery(sqlmem);
+		
+		// 查询未分配组的用户list
+		String sqlnomem = "select id, name from kq_user where team_id is null";
+		List<Map<String, String>> nomemUsers = DBUtil.executeQuery(sqlnomem);
+		
+		request.setAttribute("memUsers", memUsers);
+		request.setAttribute("nomemUsers", nomemUsers);
+		
+		request.getRequestDispatcher("/page/team_mem_view.jsp").forward(request, response);
+	}
+
+	private void memRemove(HttpServletRequest request, HttpServletResponse response) 
+		throws ServletException, IOException {
+		String teamId = request.getParameter("id");
+		String userId = request.getParameter("userId");
+		if(StringUtil.isEmpty(teamId) || StringUtil.isEmpty(userId)) {
+			throw new ServletException("Modify team: team id cannot be null or empty.");
+		}
+		
+		TeamMemEvt evt = new TeamMemEvt();
+		evt.setOpertype(2);		// 移除操作
+		evt.setTeamId(Integer.valueOf(teamId));
+		evt.setUserId(Integer.valueOf(userId));
+		
+		Result result = ServicesFactory.instance().getTeamService().teamMemManage(evt);
+		request.setAttribute(ServletConstants.REQ_MSG, result.getResultDesc());
+		
+		memView(request, response);
+	}
+
+	private void memAdd(HttpServletRequest request, HttpServletResponse response) 
+		throws ServletException, IOException {
+		String teamId = request.getParameter("id");
+		String userId = request.getParameter("userId");
+		if(StringUtil.isEmpty(teamId) || StringUtil.isEmpty(userId)) {
+			throw new ServletException("Modify team: team id cannot be null or empty.");
+		}
+		
+		TeamMemEvt evt = new TeamMemEvt();
+		evt.setOpertype(1);		// 添加操作
+		evt.setTeamId(Integer.valueOf(teamId));
+		evt.setUserId(Integer.valueOf(userId));
+		
+		Result result = ServicesFactory.instance().getTeamService().teamMemManage(evt);
+		request.setAttribute(ServletConstants.REQ_MSG, result.getResultDesc());
+		
+		memView(request, response);
+	}
+
 	private void delete(HttpServletRequest request, HttpServletResponse response) 
 		throws ServletException, IOException {
 		String id = request.getParameter("id");
@@ -224,6 +301,10 @@ public class TeamServlet extends HttpServlet {
 		public static final String MOD_VIEW = "mod_view";	// 修改界面
 		public static final String SAVE = "save";			// 保存
 		public static final String DELETE = "delete";		// 保存
+		
+		public static final String MEM_VIEW = "mem_view";		// 成员管理界面
+		public static final String MEM_ADD = "mem_add";			// 添加成员
+		public static final String MEM_REMOVE = "mem_remove";	// 移除成员
 	}
 
 }

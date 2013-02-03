@@ -60,7 +60,27 @@ public class TeamServiceImpl implements TeamService{
 	}
 
 	public Result teamMemManage(TeamMemEvt evt) {
-		return null;
+		if(evt == null) {
+			throw new NullPointerException("Param evt can not be null.");
+		}
+		
+		Map<Integer, CallableParam> paramMap = new HashMap<Integer, CallableParam>();
+		paramMap.put(1, new CallableParam(CallableParam.TYPE_IN, evt.getOpertype()));
+		paramMap.put(2, new CallableParam(CallableParam.TYPE_IN, evt.getTeamId()));
+		paramMap.put(3, new CallableParam(CallableParam.TYPE_IN, evt.getUserId()));
+		paramMap.put(4, new CallableParam(CallableParam.TYPE_OUT, null));
+		
+		Result result = new Result();
+		Map<Integer, Object> outParamMap = null;
+		try {
+			outParamMap = DBUtil.execProcedure("kqp_team_mem_manage", paramMap);
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+			result.setResultCode("1000");
+		}
+		result.setResultCode(String.valueOf(outParamMap.get(4)));
+		ResultUtil.updateResultDesc(result);
+		return result;
 	}
 
 }

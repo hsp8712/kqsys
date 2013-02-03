@@ -1,7 +1,8 @@
 
-drop function if exists kqf_over_hours;
+drop function  if exists kqf_over_hours;
 drop procedure if exists kqp_gen_dailyrecord;
 drop procedure if exists kqp_team_manage;
+drop procedure if exists kqp_team_mem_manage;
 
 delimiter //
 
@@ -114,13 +115,20 @@ label_1:begin
 			leave label_1;			
 		end if;
 		
-		select count(1) into v_num from kq_user where id=i_manage_id and team_id is null for update;
-		
+		select count(1) into v_num from kq_user where id=i_manage_id for update;
 		if v_num <= 0 then
 			rollback;
-			set o_result_code = '2001';			-- 管理员不存在或已归属其他组
+			set o_result_code = '3001';			-- 用户不存在
 			leave label_1;
 		end if;
+		
+		select team_id into v_num from kq_user where id=i_manage_id;
+		if v_num is not null then
+			rollback;
+			set o_result_code = '2001';			-- 已归属其他组
+			leave label_1;
+		end if;
+		
 		
 		update kq_user set team_id=last_insert_id() where id=i_manage_id;
 		update kq_team set manager_id=i_manage_id where id=last_insert_id();
@@ -147,7 +155,7 @@ label_1:begin
 		select count(1) into v_num from kq_user where id=i_manage_id for update;
 		if v_num <= 0 then
 			rollback;
-			set o_result_code = '2001';			-- 用户不存在
+			set o_result_code = '3001';			-- 用户不存在
 			leave label_1;
 		end if;
 		
@@ -178,6 +186,89 @@ label_1:begin
 		delete from kq_team where id=i_team_id;
 		commit;
 		set o_result_code = '0000';
+		leave label_1;
+	end if;
+	
+end //
+
+/* 组成员管理 */
+create procedure kqp_team_mem_manage(
+	in i_opertype int,					-- 操作类型 1、添加一成员；2、删除一成员；
+	in i_team_id int,					-- 组id 
+	in i_user_id int,					-- 成员用户id
+	out o_result_code varchar(4)		-- 结果返回码
+	)
+label_1:begin
+	declare v_num int default 0;
+	declare exit handler for sqlexception begin
+		rollback;
+		set o_result_code = '1000';		-- 执行过程异常
+	end;
+	
+	-- 入参合法检验
+	if i_opertype is null or i_team_id is null or i_user_id is null then
+		set o_result_code = '1001';		-- 必选参数为空
+		leave label_1;
+	end if;
+	
+	if i_opertype not in (1,2) then
+		set o_result_code = '1002';		-- 参数格式错误
+		leave label_1;
+	end if;
+	
+	start transaction;
+	
+	select count(1) into v_num from kq_team where id=i_team_id for update;
+	if v_num <= 0 then
+		rollback;
+		set o_result_code = '2002';		-- 组不存在
+		leave label_1;
+	end if;
+	
+	select count(1) into v_num from kq_user where id=i_user_id for update;
+	if v_num <= 0 then
+		rollback;
+		set o_result_code = '3001';		-- 用户不存在
+		leave label_1;
+	end if;
+	
+	select team_id into v_num from kq_user where id=i_user_id for update;
+	if v_num is not null and v_num <> i_team_id then
+		rollback;
+		set o_result_code = '2001';		-- 用户已归属其他组
+		leave label_1;
+	end if;
+	
+	-- 添加
+	if i_opertype = 1 then
+		if v_num = i_team_id then
+			rollback;
+			set o_result_code = '2003';		-- 用户已归属当前组
+			leave label_1;
+		end if;
+		update kq_user set team_id=i_team_id where id=i_user_id;
+		commit;
+		set o_result_code = '0000';		-- 成功
+		leave label_1;
+	end if;
+	
+	-- 移除
+	if i_opertype = 2 then
+		if v_num is null then
+			rollback;
+			set o_result_code = '2004';		-- 用户不属于当前组
+			leave label_1;
+		end if;
+		
+		-- 是否为管理员，是则先置空组的manager_id
+		select manager_id into v_num from kq_team where id=i_team_id for update;
+		if i_user_id = v_num then
+			update kq_team set manager_id=null where id=i_team_id;
+		end if;
+		
+		update kq_user set team_id=null where id=i_user_id;
+		commit;
+		set o_result_code = '0000';		-- 成功
 		leave label_1;
 	end if;
 	
