@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.oraro.bean.Team;
-import net.oraro.bean.User;
 import net.oraro.common.Constants;
 import net.oraro.dao.DaoFactory;
 import net.oraro.db.DBUtil;
@@ -97,11 +96,11 @@ public class TeamServlet extends HttpServlet {
 		request.setAttribute("team", team);
 		
 		// 查询teamId组成员用户list
-		String sqlmem = "select id, name from kq_user where team_id=" + teamId;
+		String sqlmem = "select id, name, empno from kq_user where team_id=" + teamId;
 		List<Map<String, String>> memUsers = DBUtil.executeQuery(sqlmem);
 		
 		// 查询未分配组的用户list
-		String sqlnomem = "select id, name from kq_user where team_id is null";
+		String sqlnomem = "select id, name, empno from kq_user where team_id is null";
 		List<Map<String, String>> nomemUsers = DBUtil.executeQuery(sqlnomem);
 		
 		request.setAttribute("memUsers", memUsers);
@@ -152,7 +151,7 @@ public class TeamServlet extends HttpServlet {
 		throws ServletException, IOException {
 		String id = request.getParameter("id");
 		if(StringUtil.isEmpty(id)) {
-			throw new ServletException("Modify team: team id cannot be null or empty.");
+			throw new ServletException("Delete team: team id cannot be null or empty.");
 		}
 		
 		TeamEvt evt = new TeamEvt();
@@ -211,12 +210,7 @@ public class TeamServlet extends HttpServlet {
 		
 		// 获取未被分配的用户或该组成员用户
 		String sql = "select * from kq_user where team_id is null or team_id=" + id;
-		List<User> users = null;
-		try {
-			users = DaoFactory.getInstance().getUserDao().executeQuery(sql);
-		} catch (DataAccessException e) {
-			log.error(e.getMessage());
-		}
+		List<Map<String, String>> users = DBUtil.executeQuery(sql);
 		
 		request.setAttribute("noTeamUsers", users);
 		request.getRequestDispatcher("/page/team_edit.jsp").forward(request, response);
@@ -252,7 +246,7 @@ public class TeamServlet extends HttpServlet {
 		// 获取待修改记录的id
 		String id = request.getParameter("id");
 		
-		if(id == null) {
+		if(StringUtil.isEmpty(id)) {
 			// id为null表示新增保存
 			evt.setOpertype(1);	
 		} else {
@@ -284,12 +278,7 @@ public class TeamServlet extends HttpServlet {
 		
 		// 获取未被分配的用户集合
 		String sql = "select * from kq_user where team_id is null";
-		List<User> users = null;
-		try {
-			users = DaoFactory.getInstance().getUserDao().executeQuery(sql);
-		} catch (DataAccessException e) {
-			log.error(e.getMessage());
-		}
+		List<Map<String, String>> users = DBUtil.executeQuery(sql);
 		
 		request.setAttribute("noTeamUsers", users);
 		request.getRequestDispatcher("/page/team_edit.jsp").forward(request, response);

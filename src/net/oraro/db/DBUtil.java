@@ -200,11 +200,30 @@ public class DBUtil {
 	}
 	
 	/**
+	 * 执行查询一条记录
+	 * @param sql
+	 * @return
+	 */
+	public static Map<String, String> executeQueryOne(String sql) {
+		
+		Map<String, String> resultMap = null;
+		
+		List<Map<String, String>> list = executeQuery(sql);
+		if(list != null && list.size() > 0) {
+			resultMap = list.get(0);
+		}
+		
+		return resultMap;
+	}
+	
+	/**
 	 * 执行sql查询，结果保存到List<Map<String, String>>中，map代表一行记录
 	 * @param sql
 	 * @return
 	 */
 	public static List<Map<String, String>> executeQuery(String sql) {
+		
+		log.info(sql);
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -215,7 +234,6 @@ public class DBUtil {
 			conn = DBUtil.getConnection();
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
-			log.info(sql);
 			
 			String[] columnNames = getColumnNames(rs.getMetaData());
 			
@@ -223,7 +241,9 @@ public class DBUtil {
 			while(rs.next()) {
 				Map<String, String> map = new HashMap<String, String>();
 				for (String columnName : columnNames) {
-					map.put(columnName, String.valueOf(rs.getObject(columnName)));
+					Object obj = rs.getObject(columnName);
+					String columnVal = obj == null ? null : String.valueOf(obj);
+					map.put(columnName, columnVal);
 				}
 				list.add(map);
 			}

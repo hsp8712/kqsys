@@ -26,9 +26,12 @@
     <servlet-name>TeamServlet</servlet-name>
     <servlet-class>net.oraro.control.TeamServlet</servlet-class>
   </servlet>
-
-
-
+  <servlet>
+    <description>user servlet</description>
+    <display-name>user servlet</display-name>
+    <servlet-name>UserServlet</servlet-name>
+    <servlet-class>net.oraro.control.UserServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>LoginAndOutServlet</servlet-name>
@@ -45,6 +48,10 @@
   <servlet-mapping>
     <servlet-name>TeamServlet</servlet-name>
     <url-pattern>/servlet/TeamServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UserServlet</servlet-name>
+    <url-pattern>/servlet/UserServlet</url-pattern>
   </servlet-mapping>
   
   <welcome-file-list>

@@ -3,6 +3,7 @@ drop function  if exists kqf_over_hours;
 drop procedure if exists kqp_gen_dailyrecord;
 drop procedure if exists kqp_team_manage;
 drop procedure if exists kqp_team_mem_manage;
+drop procedure if exists kqp_user_manage;
 
 delimiter //
 
@@ -274,5 +275,98 @@ label_1:begin
 	
 end //
 
+
+/*
+	用户管理
+*/
+create procedure kqp_user_manage(
+	in i_opertype 	int,					-- 操作类型 1、新增；2、修改；3、删除
+	in i_user_id 	int,					-- 用户id
+	in i_empno		varchar(20),			-- 工号
+	in i_name		varchar(50),			-- 姓名
+	in i_account	varchar(50),			-- 登录账号
+	in i_password	varchar(40),			-- 登录密码
+	in i_team_id	int,					-- 所属用户组
+	in i_rightgrp_id int,					-- 权限组
+	out o_user_id 	varchar(4),				-- 用户id
+	out o_result_code varchar(4)			-- 结果返回码
+	)
+label_1:begin
+	declare v_num int default 0;
+	declare exit handler for sqlexception begin
+		rollback;
+		set o_result_code = '1000';		-- 执行过程异常
+	end;
+	
+	-- 入参合法检验
+	if i_opertype is null then
+		set o_result_code = '1001';		-- 必选参数为空
+		leave label_1;
+	end if;
+	
+	if i_opertype not in (1,2,3) then
+		set o_result_code = '1002';		-- 参数格式错误
+		leave label_1;
+	end if;
+	
+	start transaction;
+	
+	if i_opertype <> 1 then
+		if i_user_id is null then
+			rollback;
+			set o_result_code = '1001';		-- 必选参数为空
+			leave label_1;
+		end if;
+		
+		select count(1) into v_num from kq_user where id=i_user_id for update;
+		if v_num <= 0 then
+			rollback;
+			set o_result_code = '3001';		-- 用户不存在
+			leave label_1;
+		end if;
+	end if;
+	
+	if i_opertype <> 3 and
+		( i_empno is null or i_name is null or i_account is null or i_rightgrp_id is null )  then
+		rollback;
+		set o_result_code = '1001';		-- 必选参数为空
+		leave label_1;
+	end if;
+	
+	-- 新增
+	if i_opertype = 1 then
+		if i_password is null then
+			rollback;
+			set o_result_code = '1001';		-- 必选参数为空
+			leave label_1;
+		end if;
+		insert into kq_user(empno, name, account, password, team_id, rightgrp_id) values(i_empno, i_name, i_account, i_password, i_team_id, i_rightgrp_id);
+		commit;
+		set o_user_id = last_insert_id();
+		set o_result_code = '0000';		-- 成功
+		leave label_1;
+	end if;
+	
+	-- 修改，所属组不能修改
+	if i_opertype = 2 then
+		update kq_user set empno=i_empno, name=i_name, account=i_account, team_id=i_team_id, rightgrp_id=i_rightgrp_id where id=i_user_id;
+		commit;
+		set o_user_id = i_user_id;
+		set o_result_code = '0000';		-- 成功
+		leave label_1;
+	end if;
+	
+	-- 删除
+	if i_opertype = 3 then
+		delete from kq_user where id=i_user_id;
+		commit;
+		set o_user_id = null;
+		set o_result_code = '0000';		-- 成功
+		leave label_1;
+	end if;
+	
+	rollback;
+end //
+	
 delimiter ;
 

@@ -18,30 +18,6 @@ public class RightDaoImpl implements RightDao{
 	
 	private Logger log = Logger.getLogger(RightDaoImpl.class);
 	
-	
-	public boolean insert(Right right) throws DataAccessException {
-		return false;
-	}
-
-	
-	public boolean update(Right right) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public boolean delete(Integer id) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public List<Right> queryAll() throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
 	public List<Right> queryByUserId(Integer userId) throws DataAccessException {
 		
 		if(userId == null) {
@@ -56,7 +32,8 @@ public class RightDaoImpl implements RightDao{
 		try {
 			conn = DBUtil.getConnection();
 			
-			String sql = "select b.* from kq_user_right a, kq_right b where a.right_id=b.id and a.user_id=" + userId;
+			String sql = "select b.* from kq_user a, kq_right b, kq_rightgrp_right c where a.id=" + userId +
+							" and c.rightgrp_id=a.rightgrp_id and c.right_id=b.id";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			log.info(sql);
@@ -80,16 +57,5 @@ public class RightDaoImpl implements RightDao{
 		return rights;
 	}
 
-	
-	public boolean execute(String sql) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public List<Right> executeQuery(String sql) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

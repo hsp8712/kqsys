@@ -9,4 +9,7 @@ public class Constants {
 	
 	/** 分页-每页显示记录数 */
 	public static final int PAGE_SIZE = 10;
+	
+	/** 初始密码 */
+	public static final String INIT_PASSWORD = "000000";
 }

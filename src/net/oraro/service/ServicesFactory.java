@@ -4,6 +4,7 @@ import net.oraro.service.impl.CheckInServiceImpl;
 import net.oraro.service.impl.DailyRecordServiceImpl;
 import net.oraro.service.impl.LoginAndOutServiceImpl;
 import net.oraro.service.impl.TeamServiceImpl;
+import net.oraro.service.impl.UserServiceImpl;
 
 /**
  * 单例服务工厂
@@ -49,7 +50,7 @@ public class ServicesFactory {
 		return dailyRecordService;
 	}
 	
-	/** 日考勤记录服务 */
+	/** 组管理 */
 	private TeamService teamService;
 	public TeamService getTeamService() {
 		if(teamService == null) {
@@ -58,5 +59,13 @@ public class ServicesFactory {
 		return teamService;
 	}
 	
+	/** 用户管理 */
+	private UserService userService;
+	public UserService getUserService() {
+		if(userService == null) {
+			userService = new UserServiceImpl();
+		}
+		return userService;
+	}
 	
 }

@@ -45,13 +45,12 @@ public class TeamServiceImpl implements TeamService{
 		}
 		bResult.setResultCode(String.valueOf(outParamMap.get(6)));
 		
-		String id = String.valueOf(outParamMap.get(7));
+		Object obj = outParamMap.get(7);
 		Integer idInt = null;
-		if(!StringUtil.isEmpty(id)) {
-			try {
-				idInt = Integer.valueOf(id);
-			} catch (NumberFormatException e) {
-			}
+		if(obj == null) {
+			idInt = 0;
+		} else {
+			idInt = Integer.valueOf(obj.toString());
 		}
 		
 		bResult.setId(idInt);
