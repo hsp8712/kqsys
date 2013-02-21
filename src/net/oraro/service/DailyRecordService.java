@@ -1,7 +1,8 @@
 package net.oraro.service;
 
-import cn.huangshaoping.page.Page;
-import net.oraro.bean.DailyRecord;
+import net.oraro.service.bean.evt.DailyRecordEvt;
+import net.oraro.service.bean.result.Result;
+
 
 /**
  * 日考勤记录服务
@@ -11,10 +12,9 @@ import net.oraro.bean.DailyRecord;
 public interface DailyRecordService {
 	
 	/**
-	 * 获取日考勤分页记录
-	 * @param pageNo
+	 * 生成考勤日记录
+	 * @param evt
 	 * @return
 	 */
-	Page<DailyRecord> getPageDailyRecords(int pageNo);
-	
+	public Result genDailyRecord(DailyRecordEvt evt);
 }

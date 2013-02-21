@@ -1,6 +1,7 @@
 package net.oraro.control;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import cn.huangshaoping.page.Page;
 
 import net.oraro.bean.DailyRecord;
+import net.oraro.common.Constants;
+import net.oraro.dao.DaoFactory;
+import net.oraro.exception.DataAccessException;
 import net.oraro.service.DailyRecordService;
 import net.oraro.service.ServicesFactory;
 
@@ -19,7 +23,7 @@ import net.oraro.service.ServicesFactory;
  *
  */
 public class DailyRecordServlet extends HttpServlet {
-
+	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doPost(request, response);
@@ -37,7 +41,15 @@ public class DailyRecordServlet extends HttpServlet {
 			
 			String pageNoStr = request.getParameter("pageNo");
 			int pageNo = pageNoStr == null ? 0 : Integer.valueOf(pageNoStr);
-			Page<DailyRecord> page = service.getPageDailyRecords(pageNo);
+			
+			List<DailyRecord> dailyRecords = null;
+			try {
+				dailyRecords = DaoFactory.getInstance().getDailyRecordDao().queryAll();
+			} catch (DataAccessException e) {
+				throw new ServletException(e.getMessage());
+			}
+			
+			Page<DailyRecord> page = new Page<DailyRecord>(dailyRecords, Constants.PAGE_SIZE, pageNo);
 			request.setAttribute(ServletConstants.REQ_PAGE, page);
 			request.getRequestDispatcher("/page/daily_record_view.jsp").forward(request, response);
 			return;

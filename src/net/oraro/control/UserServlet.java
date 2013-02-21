@@ -72,7 +72,9 @@ public class UserServlet extends HttpServlet {
 		String pageNoStr = request.getParameter("pageNo");
 		int pageNo = pageNoStr == null ? 0 : Integer.valueOf(pageNoStr);
 		
-		String sql = "select a.id, a.empno, a.name, a.account, b.team_name from kq_user a left join kq_team b on a.team_id=b.id";
+		String sql = "select a.id, a.empno, a.name, a.account, b.team_name, c.rightgrp_name from kq_user a " +
+				"left join kq_team b on a.team_id=b.id " +
+				"left join kq_rightgrp c on a.rightgrp_id=c.id";
 		List<Map<String, String>> teams = DBUtil.executeQuery(sql);
 		
 		Page<Map<String, String>> page = new Page<Map<String, String>>(teams, Constants.PAGE_SIZE, pageNo);
@@ -97,7 +99,7 @@ public class UserServlet extends HttpServlet {
 			throw new ServletException("Modify user: user id cannot be null or empty.");
 		}
 		
-		String sql = "select a.id, a.name, a.empno, a.account, a.team_id, b.team_name " +
+		String sql = "select a.id, a.name, a.empno, a.account, a.team_id, b.team_name, a.rightgrp_id " +
 				"from kq_user a left join kq_team b on a.team_id=b.id where a.id=" + id;
 		Map<String, String> user = DBUtil.executeQueryOne(sql);
 		request.setAttribute("user", user);

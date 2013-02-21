@@ -169,12 +169,14 @@ public class DBUtil {
 		Map<Integer, Object> outParamMap = new HashMap<Integer, Object>();
 		try {
 			con = getConnection();
-			cstmt = con.prepareCall(sqlBuffer.toString());
+			String execSql = sqlBuffer.toString();
+			log.info("Execute procedure sql:\n" + execSql + ", with parameters:" + paramMap);
+			cstmt = con.prepareCall(execSql);
 			for (Integer key : keys) {
 				CallableParam cp = paramMap.get(key);
 				cstmt.setObject(key, cp.getValue());
 			}
-
+			
 			execSuccess = cstmt.execute();
 		
 			for (Integer key : keys) {

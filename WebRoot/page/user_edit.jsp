@@ -80,7 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				</td>
   			</tr>
   			<tr>
-  				<td>所属组</td>
+  				<td>权限组</td>
   				<td>
   					<select name="rightgrp">
 	  				<c:forEach var="rightgrp" items="${rightgrps }">

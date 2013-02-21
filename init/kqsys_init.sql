@@ -1,11 +1,14 @@
 
 use kqsys;
 
+insert into kq_config(config_name, config_value) values('over_time', '18:00:00');
+
 /* kq_right */
 insert into kq_right values(1,'在线打卡','servlet/CheckinServlet?opertype=view');
 insert into kq_right values(2,'组管理','servlet/TeamServlet?opertype=view');
 insert into kq_right values(3,'组考勤记录','servlet/DailyRecordServlet?opertype=query');
 insert into kq_right values(4,'用户管理','servlet/UserServlet?opertype=view');
+insert into kq_right values(5,'权限组管理','servlet/RightgrpServlet?opertype=view');
 
 insert into kq_rightgrp values(1,'超级管理员');
 insert into kq_rightgrp values(2,'组管理员');
@@ -15,6 +18,7 @@ insert into kq_rightgrp_right values(null,1,1);
 insert into kq_rightgrp_right values(null,1,2);
 insert into kq_rightgrp_right values(null,1,3);
 insert into kq_rightgrp_right values(null,1,4);
+insert into kq_rightgrp_right values(null,1,5);
 
 insert into kq_rightgrp_right values(null,2,1);
 insert into kq_rightgrp_right values(null,2,3);
@@ -55,6 +59,13 @@ insert into kq_result_code values('2003', '用户已归属当前组');
 insert into kq_result_code values('2004', '用户不属于当前组');
 
 insert into kq_result_code values('3001', '用户不存在');
+
+insert into kq_result_code values('4001', '权限组不存在');
+
+insert into kq_result_code values('5001', '权限不存在');
+
+insert into kq_result_code values('6001', '考勤统计日期必须小于当前日期');
+insert into kq_result_code values('6002', '考勤记录已存在');
 
 commit;
 

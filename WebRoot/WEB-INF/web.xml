@@ -4,6 +4,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
 	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+  <listener>
+  	<listener-class>net.oraro.control.ContextListener</listener-class>
+  </listener>
   <servlet>
     <description>This is the description of my J2EE component</description>
     <display-name>This is the display name of my J2EE component</display-name>
@@ -32,6 +35,12 @@
     <servlet-name>UserServlet</servlet-name>
     <servlet-class>net.oraro.control.UserServlet</servlet-class>
   </servlet>
+   <servlet>
+    <description>rightgrp</description>
+    <display-name>rightgrp</display-name>
+    <servlet-name>RightgrpServlet</servlet-name>
+    <servlet-class>net.oraro.control.RightgrpServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>LoginAndOutServlet</servlet-name>
@@ -52,6 +61,10 @@
   <servlet-mapping>
     <servlet-name>UserServlet</servlet-name>
     <url-pattern>/servlet/UserServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RightgrpServlet</servlet-name>
+    <url-pattern>/servlet/RightgrpServlet</url-pattern>
   </servlet-mapping>
   
   <welcome-file-list>

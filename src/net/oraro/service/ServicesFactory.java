@@ -3,6 +3,7 @@ package net.oraro.service;
 import net.oraro.service.impl.CheckInServiceImpl;
 import net.oraro.service.impl.DailyRecordServiceImpl;
 import net.oraro.service.impl.LoginAndOutServiceImpl;
+import net.oraro.service.impl.RightgrpServiceImpl;
 import net.oraro.service.impl.TeamServiceImpl;
 import net.oraro.service.impl.UserServiceImpl;
 
@@ -66,6 +67,15 @@ public class ServicesFactory {
 			userService = new UserServiceImpl();
 		}
 		return userService;
+	}
+	
+	/** 权限组管理 */
+	private RightgrpService rightgrpService;
+	public RightgrpService getRightgrpService() {
+		if(rightgrpService == null) {
+			rightgrpService = new RightgrpServiceImpl();
+		}
+		return rightgrpService;
 	}
 	
 }

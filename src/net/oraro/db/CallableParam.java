@@ -30,4 +30,10 @@ public class CallableParam {
 		this.type = type;
 	}
 	
+	public String toString() {
+		return "[type=" + 
+			(this.type == 1 ? "in" : this.type == 2 ? "out" : this.type == 3 ? "inout" : "unknow") +
+			", value=" + this.value + "]";
+	}
+	
 }

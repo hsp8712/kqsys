@@ -1,30 +1,44 @@
 package net.oraro.service.impl;
 
-import java.util.List;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.oraro.db.CallableParam;
+import net.oraro.db.DBUtil;
+import net.oraro.service.DailyRecordService;
+import net.oraro.service.bean.evt.DailyRecordEvt;
+import net.oraro.service.bean.result.Result;
+import net.oraro.service.bean.result.ResultUtil;
 
 import org.apache.log4j.Logger;
-
-import net.oraro.bean.DailyRecord;
-import net.oraro.common.Constants;
-import net.oraro.dao.DaoFactory;
-import net.oraro.exception.DataAccessException;
-import net.oraro.service.DailyRecordService;
-import cn.huangshaoping.page.Page;
 
 public class DailyRecordServiceImpl implements DailyRecordService{
 	
 	private Logger log = Logger.getLogger(DailyRecordServiceImpl.class);
-	
-	public Page<DailyRecord> getPageDailyRecords(int pageNo) {
-		
-		List<DailyRecord> dailyRecords = null;
-		try {
-			dailyRecords = DaoFactory.getInstance().getDailyRecordDao().queryAll();
-		} catch (DataAccessException e) {
-			log.error(e.getMessage());
+
+	public Result genDailyRecord(DailyRecordEvt evt) {
+		if(evt == null) {
+			throw new NullPointerException("Param evt can not be null.");
 		}
 		
-		return new Page<DailyRecord>(dailyRecords, Constants.PAGE_SIZE, pageNo);
+		Map<Integer, CallableParam> paramMap = new HashMap<Integer, CallableParam>();
+		paramMap.put(1, new CallableParam(CallableParam.TYPE_IN, evt.getOpertype()));
+		paramMap.put(2, new CallableParam(CallableParam.TYPE_IN, evt.getUserId()));
+		paramMap.put(3, new CallableParam(CallableParam.TYPE_IN, evt.getRecordDate()));
+		paramMap.put(4, new CallableParam(CallableParam.TYPE_OUT, null));
+		
+		Result result = new Result();
+		Map<Integer, Object> outParamMap = null;
+		try {
+			outParamMap = DBUtil.execProcedure("kqp_gen_dailyrecord", paramMap);
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+			result.setResultCode("1000");
+		}
+		result.setResultCode(String.valueOf(outParamMap.get(4)));
+		ResultUtil.updateResultDesc(result);
+		return result;
 	}
-
+	
 }

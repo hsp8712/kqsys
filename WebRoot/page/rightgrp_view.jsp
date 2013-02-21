@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="scripts/common.js"></script>
 	<script type="text/javascript" src="scripts/page.js"></script>
 	<style type="text/css">
-		.operate{ width: 80px; }
+		.operate{ width: 150px; }
 	</style>
 	<script type="text/javascript">
 		$(function(){
@@ -36,31 +36,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$(".tableClass").attr("cellspacing", "1");
 		});
 		
-		function edit(id) {
-			window.location.href="<%=basePath%>servlet/UserServlet?opertype=mod_view&id=" + id;
+		function del(id, teamName) {
+			if(window.confirm("确定删除\"" + teamName + "\"")) {
+				window.location.href="<%=basePath%>servlet/RightgrpServlet?opertype=delete&id=" + id;
+			}
 		}
 		
-		function del(id, userName) {
-			if(window.confirm("确定删除\"" + userName + "\"")) {
-				window.location.href="<%=basePath%>servlet/UserServlet?opertype=delete&id=" + id;
-			}
+		function memView(id) {
+			window.location.href="<%=basePath%>servlet/RightgrpServlet?opertype=mem_view&id=" + id;
 		}
 	</script>
   </head>
   
   <body>
   	<div class="main_wrap">
-  		<a href="servlet/UserServlet?opertype=add_view" class="easyui-linkbutton" style="margin:5px auto 0 5px;" data-options="iconCls:'icon-add'">新增</a>
-	  	<form name="inputForm" action="servlet/UserServlet?opertype=view" method="post">
-	  	<H:table name="page" tableClass="tableClass" var="user" formName="inputForm" showPageBottom="true">
-	  		<H:tablefield title="工号" >${user.empno }</H:tablefield>
-			<H:tablefield title="姓名" >${user.name }</H:tablefield>
-			<H:tablefield title="账号" >${user.account }</H:tablefield>
-			<H:tablefield title="所属组" >${user.team_name }</H:tablefield>
-			<H:tablefield title="权限组" >${user.rightgrp_name }</H:tablefield>
+  		<a href="servlet/RightgrpServlet?opertype=add_view" class="easyui-linkbutton" style="margin:5px auto 0 5px;" data-options="iconCls:'icon-add'">新增</a>
+	  	<form name="inputForm" action="servlet/RightgrpServlet?opertype=view" method="post">
+	  	<H:table name="page" tableClass="tableClass" var="rightgrp" formName="inputForm" showPageBottom="true">
+	  		<H:tablefield title="权限组名" >${rightgrp.rightgrp_name }</H:tablefield>
 			<H:tablefield title="操作" cssClass="operate" >
-				<a href="javascript: edit('${user.id }')" >编辑</a>&nbsp;|
-				<a href="javascript: del('${user.id }','${user.empno }-${user.name }')" >删除</a>
+				<a href="javascript: del('${rightgrp.id }','${rightgrp.rightgrp_name }')" >删除</a>&nbsp;|
+				<a href="javascript: memView('${rightgrp.id }')" >权限管理</a>
 			</H:tablefield>
 	  	</H:table>
 	  	</form>
