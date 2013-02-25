@@ -1,5 +1,7 @@
 package net.oraro.control;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +17,7 @@ import net.oraro.db.DBUtil;
 import net.oraro.service.ServicesFactory;
 import net.oraro.service.bean.evt.DailyRecordEvt;
 import net.oraro.service.bean.result.Result;
+import net.oraro.util.SXSSFExcel;
 import net.oraro.web.WebTimerTaskManage;
 
 public class ContextListener implements ServletContextListener {
@@ -70,6 +73,47 @@ public class ContextListener implements ServletContextListener {
 				}
 			}
 		}, date, 24 * 60 * 60 * 1000);
+		
+		// 清空临时excel文件
+		cld.set(Calendar.HOUR_OF_DAY, 3);
+		date = cld.getTime();
+		WebTimerTaskManage.getInstance().schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				
+				File file = new File(SXSSFExcel.TEMP_EXCEL_DIR);
+				File[] files = file.listFiles(new FilenameFilter() {
+
+					public boolean accept(File dir, String name) {
+						
+						String fileDate = name.substring(0, 8);
+						long date = Long.valueOf(fileDate);
+						
+						String nowFileDate = SXSSFExcel.genTempFileName().substring(0, 8);
+						long nowDate = Long.valueOf(nowFileDate);
+						
+						if(date < nowDate) {
+							return true;
+						}
+						
+						return false;
+					}
+				});
+				
+				if(files == null || files.length <= 0) {
+					return;
+				}
+				
+				for (File file2 : files) {
+					if(file2.exists()) {
+						file2.delete();
+					}
+				}
+				
+			}
+		}, date, 24 * 60 * 60 * 1000);
+		
 	}
 
 }

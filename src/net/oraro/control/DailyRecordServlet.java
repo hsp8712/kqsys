@@ -1,21 +1,23 @@
 package net.oraro.control;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cn.huangshaoping.page.Page;
-
-import net.oraro.bean.DailyRecord;
+import net.oraro.bean.User;
 import net.oraro.common.Constants;
-import net.oraro.dao.DaoFactory;
-import net.oraro.exception.DataAccessException;
-import net.oraro.service.DailyRecordService;
-import net.oraro.service.ServicesFactory;
+import net.oraro.db.DBUtil;
+import net.oraro.util.SXSSFExcel;
+import cn.huangshaoping.page.Page;
 
 /**
  * 日考勤记录管理
@@ -33,34 +35,70 @@ public class DailyRecordServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String opertype = request.getParameter(ServletConstants.REQ_PARAM_OPERTYPE);
 		
-		DailyRecordService service = ServicesFactory.instance().getDailyRecordService();
-		
 		if(Opertype.QUERY.equals(opertype)) {
 			
 			// 查询
-			
 			String pageNoStr = request.getParameter("pageNo");
 			int pageNo = pageNoStr == null ? 0 : Integer.valueOf(pageNoStr);
 			
-			List<DailyRecord> dailyRecords = null;
-			try {
-				dailyRecords = DaoFactory.getInstance().getDailyRecordDao().queryAll();
-			} catch (DataAccessException e) {
-				throw new ServletException(e.getMessage());
-			}
+			List<Map<String, String>> dailyRecords = getDatas(request);
 			
-			Page<DailyRecord> page = new Page<DailyRecord>(dailyRecords, Constants.PAGE_SIZE, pageNo);
+			Page<Map<String, String>> page = new Page<Map<String, String>>(dailyRecords, Constants.PAGE_SIZE, pageNo);
 			request.setAttribute(ServletConstants.REQ_PAGE, page);
 			request.getRequestDispatcher("/page/daily_record_view.jsp").forward(request, response);
 			return;
 		} else if(Opertype.EXPORT.equals(opertype)) {
 			
 			// 导出
+			response.setContentType("application/vnd.ms-excel");
+			response.setHeader("Content-disposition", "attachment; filename=daily_record.xlsx");
+
+			List<Map<String, String>> dailyRecords = getDatas(request);
+			String[] keys = {"record_date", "empno", "name", "first_time", "last_time", "over_time", "over_time_hour"};
+			Map<String, String> titles = new HashMap<String, String>();
+			titles.put(keys[0], "日期");
+			titles.put(keys[1], "工号");
+			titles.put(keys[2], "姓名");
+			titles.put(keys[3], "首次打卡时间");
+			titles.put(keys[4], "最后打卡时间");
+			titles.put(keys[5], "加班开始时间");
+			titles.put(keys[6], "加班时长");
+			dailyRecords.add(0, titles);
+			
+			String filePath = SXSSFExcel.createExcel(dailyRecords, keys);
+			InputStream is = new FileInputStream(filePath);
+			ServletOutputStream os = response.getOutputStream();
+			
+			
+			byte[] b = new byte[1024];
+			int len;
+			while((len = is.read(b)) != -1) {
+				os.write(b, 0, len);
+			}
+			
+			os.flush();
+			
+			is.close();
+			os.close();
 			
 		} else {
 			throw new ServletException("请求的操作不存在<opertype=" + opertype + ">.");
 		}
 		
+	}
+	
+	private List<Map<String, String>> getDatas(HttpServletRequest request) {
+		// 当前登录用户所在组
+		User curUser = (User)request.getSession().getAttribute(LoginAndOutServlet.SESSIONKEY_CURRENT_USER);
+		int curTeamId = curUser.getTeam().getId();
+		
+		String sql = "select b.empno, b.name, a.record_date, a.first_time, a.last_time, a.over_time, a.over_time_hour" + 
+				" from kq_dailyrecord a, kq_user b where a.user_id=b.id and user_id in " + 
+				"(select id from kq_user where team_id=" + curTeamId + ")";
+		
+		List<Map<String, String>> dailyRecords = DBUtil.executeQuery(sql);
+		
+		return dailyRecords;
 	}
 	
 	public class Opertype {

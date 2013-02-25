@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.oraro.bean.DailyRecord;
-import net.oraro.bean.Team;
-import net.oraro.bean.User;
 import net.oraro.dao.DailyRecordDao;
 import net.oraro.db.DBUtil;
 import net.oraro.exception.DataAccessException;
@@ -20,25 +18,6 @@ public class DailyRecordDaoImpl implements DailyRecordDao {
 	
 	private Logger log = Logger.getLogger(DailyRecordDaoImpl.class);
 
-	
-	public boolean insert(DailyRecord dailyRecord) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public boolean update(DailyRecord dailyRecord) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public boolean delete(Integer id) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
 	public List<DailyRecord> queryAll() throws DataAccessException {
 		
 		String sql = "select * from kq_dailyrecord";
@@ -73,19 +52,6 @@ public class DailyRecordDaoImpl implements DailyRecordDao {
 		}
 		
 		return dailyRecords;
-	}
-
-	
-	public boolean execute(String sql) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public List<DailyRecord> executeQuery(String sql)
-			throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 
