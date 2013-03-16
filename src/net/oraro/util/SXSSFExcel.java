@@ -74,7 +74,7 @@ public class SXSSFExcel {
 			 for (int j = 0; j < keys.length; j++) {
 				 
 				 if(i == 0) {
-					 sh.setColumnWidth(j, 15 << 8);
+					 sh.setColumnWidth(j, 17 << 8);
 				 }
 				 
 				String key = keys[j]; 

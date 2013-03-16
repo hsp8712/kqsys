@@ -61,10 +61,11 @@ public class CheckinRecordServlet extends HttpServlet {
 			response.setContentType("application/vnd.ms-excel");
 			response.setHeader("Content-disposition", "attachment; filename=checkin_record.xlsx");
 
-			String[] keys = {"name", "check_time"};
+			String[] keys = {"name", "check_ip", "check_time"};
 			Map<String, String> titles = new HashMap<String, String>();
 			titles.put(keys[0], "姓名");
-			titles.put(keys[1], "日期");
+			titles.put(keys[1], "打卡IP");
+			titles.put(keys[2], "日期时间");
 			records.add(0, titles);
 			
 			String filePath = SXSSFExcel.createExcel(records, keys);
@@ -108,10 +109,11 @@ public class CheckinRecordServlet extends HttpServlet {
 		String month = request.getParameter("month");
 		String name  = request.getParameter("name");
 		
-		StringBuffer sqlStrBuf = new StringBuffer("select a.check_time, b.name from kq_checkinrecord a, kq_user b");
-		sqlStrBuf.append(" where a.user_id in (select id from kq_user where team_id=");
+		StringBuffer sqlStrBuf = new StringBuffer("select date_format(a.check_time, '%Y-%m-%d %H:%i:%s') as check_time, ");
+		sqlStrBuf.append("a.check_ip, b.name from kq_checkinrecord a left join kq_user b on a.user_id=b.id ");
+		sqlStrBuf.append("where a.user_id in (select id from kq_user where team_id=");
 		sqlStrBuf.append(curTeamId);
-		sqlStrBuf.append(")");
+		sqlStrBuf.append(") ");
 		
 		if(!StringUtil.isEmpty(name)) {
 			sqlStrBuf.append(" and b.name like '%");

@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.oraro.bean.User;
-import net.oraro.service.CheckInService;
 import net.oraro.service.ServicesFactory;
+import net.oraro.service.bean.evt.CheckinRecordEvt;
+import net.oraro.service.bean.result.Result;
 
 import org.apache.log4j.Logger;
 
@@ -58,18 +59,24 @@ public class CheckinServlet extends HttpServlet {
 			Object userObj = session.getAttribute(LoginAndOutServlet.SESSIONKEY_CURRENT_USER);
 			User curUser = (User) userObj;
 			
-			CheckInService checkInService = ServicesFactory.instance().getCheckInService();
-			boolean checkinSuccess = checkInService.checkIn(curUser);
+			// Get request ip
+			String ip = request.getRemoteAddr();
 			
-			if(checkinSuccess) {
-				msg = "打卡成功.";
-				log.info("Check in successfully.");
+			CheckinRecordEvt evt = new CheckinRecordEvt();
+			evt.setOpertype(1);
+			evt.setUserId(curUser.getId());
+			evt.setCheckTime(Calendar.getInstance().getTime());
+			evt.setCheckIp(ip);
+			
+			
+			Result result = ServicesFactory.instance().getCheckInService().checkinManage(evt);
+			if("0000".equals(result.getResultCode())) {
+				log.info("Checkin successfully.");
 			} else {
-				msg = "打卡失败.";
-				log.info("Check in failed.");
+				log.info("Checkin failed.");
 			}
 			
-			request.setAttribute(ServletConstants.REQ_MSG, msg);
+			request.setAttribute(ServletConstants.REQ_MSG, result.getResultDesc());
 			request.getRequestDispatcher("/page/checkin.jsp").forward(request, response);
 			
 		} else if(Opertype.VIEW.equals(opertype)) {

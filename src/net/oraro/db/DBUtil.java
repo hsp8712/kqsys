@@ -89,7 +89,7 @@ public class DBUtil {
 	 */
 	public static void release(Connection conn) {
 		try {
-			if(conn != null || !conn.isClosed()) {
+			if(conn != null) {
 				conn.close();
 			}
 		} catch (SQLException e) {
@@ -104,7 +104,7 @@ public class DBUtil {
 	 */
 	public static void release(Statement stmt, Connection conn) {
 		try {
-			if(stmt != null || !stmt.isClosed()) {
+			if(stmt != null) {
 				stmt.close();
 			}
 		} catch (SQLException e) {
@@ -120,7 +120,7 @@ public class DBUtil {
 	 */
 	public static void release(ResultSet rs, Statement stmt, Connection conn) {
 		try {
-			if(rs != null || !rs.isClosed()) {
+			if(rs != null) {
 				rs.close();
 			}
 		} catch (SQLException e) {

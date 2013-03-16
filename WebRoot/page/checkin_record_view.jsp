@@ -55,6 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	</form>
   	<H:table name="page" tableClass="tableClass" var="record" formName="inputForm" showPageBottom="true">
   		<H:tablefield title="姓名" >${record.name }</H:tablefield>
+  		<H:tablefield title="打卡IP" >${record.check_ip }</H:tablefield>
   		<H:tablefield title="日期时间" >${record.check_time }</H:tablefield>
   	</H:table>
   </body>

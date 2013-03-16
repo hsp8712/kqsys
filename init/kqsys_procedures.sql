@@ -7,6 +7,7 @@ drop procedure if exists kqp_user_manage;
 drop procedure if exists kqp_user_password_mod;
 drop procedure if exists kqp_rightgrp_manage;
 drop procedure if exists kqp_rightgrp_mem_manage;
+drop procedure if exists kqp_checkin_manage;
 
 delimiter //
 
@@ -628,6 +629,47 @@ label_1:begin
 	
 	rollback;
 end //
+
+/* 考勤打卡 */
+create procedure kqp_checkin_manage(
+	in i_opertype 		int,					-- 操作类型 1、打卡；
+	in i_user_id 		int,					-- 用户id
+	in i_check_time		datetime,				-- 打卡日期时间
+	in i_check_ip		varchar(15),			-- 打卡请求IP
+	out o_result_code 	varchar(4)				-- 结果返回码
+)
+label_1:begin
+	declare v_num int default 0;
+	declare exit handler for sqlexception begin
+		rollback;
+		set o_result_code = '1000';		-- 执行过程异常
+	end;
+	
+	-- 入参合法检验
+	if i_opertype is null or i_user_id is null or i_check_time is null then
+		set o_result_code = '1001';		-- 必选参数为空
+		leave label_1;
+	end if;
+	
+	if i_opertype <> 1 then
+		set o_result_code = '1002';		-- 参数格式错误
+		leave label_1;
+	end if;
+	
+	start transaction;
+	select count(1) into v_num from kq_user where id=i_user_id for update;
+	if v_num <= 0 then
+		rollback;
+		set o_result_code = '3001';		-- 用户不存在
+		leave label_1;
+	end if;
+	
+	insert into kq_checkinrecord(user_id, check_time, check_ip) values(i_user_id, i_check_time, i_check_ip);
+	commit;
+	set o_result_code = '0000';			-- 成功
+		
+end //
+
 
 delimiter ;
 

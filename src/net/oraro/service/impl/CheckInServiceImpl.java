@@ -1,13 +1,15 @@
 package net.oraro.service.impl;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
-import net.oraro.bean.CheckinRecord;
-import net.oraro.bean.User;
-import net.oraro.dao.DaoFactory;
-import net.oraro.exception.DataAccessException;
+import net.oraro.db.CallableParam;
+import net.oraro.db.DBUtil;
 import net.oraro.service.CheckInService;
+import net.oraro.service.bean.evt.CheckinRecordEvt;
+import net.oraro.service.bean.result.Result;
+import net.oraro.service.bean.result.ResultUtil;
 
 import org.apache.log4j.Logger;
 
@@ -15,34 +17,29 @@ public class CheckInServiceImpl implements CheckInService{
 	
 	private Logger log = Logger.getLogger(CheckInServiceImpl.class);
 	
-	public boolean checkIn(User user, Date date) {
-		
-		if(user == null) {
-			throw new NullPointerException("User is null.");
-		}
-		if(date == null) {
-			throw new NullPointerException("Date is null.");
+	public Result checkinManage(CheckinRecordEvt evt) {
+		if(evt == null) {
+			throw new NullPointerException("Param evt can not be null.");
 		}
 		
-		CheckinRecord cr = new CheckinRecord();
-		cr.setCheckTime(date);
-		cr.setUser(user);
+		Map<Integer, CallableParam> paramMap = new HashMap<Integer, CallableParam>();
+		paramMap.put(1, new CallableParam(CallableParam.TYPE_IN, evt.getOpertype()));
+		paramMap.put(2, new CallableParam(CallableParam.TYPE_IN, evt.getUserId()));
+		paramMap.put(3, new CallableParam(CallableParam.TYPE_IN, evt.getCheckTime()));
+		paramMap.put(4, new CallableParam(CallableParam.TYPE_IN, evt.getCheckIp()));
+		paramMap.put(5, new CallableParam(CallableParam.TYPE_OUT, null));
 		
-		boolean isSuccess = false;
+		Result result = new Result();
+		Map<Integer, Object> outParamMap = null;
 		try {
-			isSuccess = DaoFactory.getInstance().getCheckinRecordDao().insert(cr);
-		} catch (DataAccessException e) {
+			outParamMap = DBUtil.execProcedure("kqp_checkin_manage", paramMap);
+		} catch (SQLException e) {
 			log.error(e.getMessage());
+			result.setResultCode("1000");
 		}
-		
-		return true;
-	}
-
-	public boolean checkIn(User user) {
-		
-		// 当前时间
-		Date date = Calendar.getInstance().getTime();
-		return checkIn(user, date);
+		result.setResultCode(String.valueOf(outParamMap.get(5)));
+		ResultUtil.updateResultDesc(result);
+		return result;
 	}
 
 }

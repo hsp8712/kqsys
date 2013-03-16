@@ -81,14 +81,15 @@ create table kq_dailyrecord
 alter table kq_dailyrecord add constraint fk_kq_dailyrecord_1 foreign key(user_id) references kq_user(id) on delete cascade;
 
 
-/* 日考勤记录 */
+/* 打卡记录 */
 drop table if exists kq_checkinrecord;
 
 create table kq_checkinrecord
 (
    id     int       primary key auto_increment, 
    user_id     int    not null,			-- 用户id
-   check_time	datetime null			-- 打卡日期时间
+   check_time	datetime null,			-- 打卡日期时间
+   check_ip    varchar(15)				-- 打卡IP
 ) engine=innodb;
 
 alter table kq_checkinrecord add constraint fk_kq_checkinrecord_1 foreign key(user_id) references kq_user(id) on delete cascade;
