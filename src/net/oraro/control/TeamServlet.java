@@ -226,10 +226,16 @@ public class TeamServlet extends HttpServlet {
 		
 		// 获取参数
 		String teamName = request.getParameter("teamName");
+		// 获取待修改记录的id
+		String id = request.getParameter("id");
 		
 		if(StringUtil.isEmpty(teamName)) {
 			request.setAttribute(ServletConstants.REQ_MSG, "组名不能为空");
-			addView(request, response);
+			if(StringUtil.isEmpty(id)) {
+				addView(request, response);
+			} else {
+				modView(request, response);
+			}
 			return;
 		}
 		
@@ -243,8 +249,6 @@ public class TeamServlet extends HttpServlet {
 		evt.setTeamName(teamName);
 		
 		
-		// 获取待修改记录的id
-		String id = request.getParameter("id");
 		
 		if(StringUtil.isEmpty(id)) {
 			// id为null表示新增保存
@@ -258,7 +262,7 @@ public class TeamServlet extends HttpServlet {
 		BeanResult bResult = ServicesFactory.instance().getTeamService().teamManage(evt);
 		request.setAttribute(ServletConstants.REQ_MSG, bResult.getResultDesc());
 		
-		if(id == null) {
+		if(StringUtil.isEmpty(id)) {
 			addView(request, response);
 		} else {
 			modView(request, response);

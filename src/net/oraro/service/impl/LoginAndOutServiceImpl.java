@@ -1,6 +1,5 @@
 package net.oraro.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.oraro.bean.Right;
@@ -10,6 +9,7 @@ import net.oraro.dao.UserDao;
 import net.oraro.exception.DataAccessException;
 import net.oraro.exception.LoginAndOutException;
 import net.oraro.service.LoginAndOutService;
+import net.oraro.util.CryptUtil;
 import net.oraro.util.StringUtil;
 
 import org.apache.log4j.Logger;
@@ -27,6 +27,7 @@ public class LoginAndOutServiceImpl implements LoginAndOutService{
 		
 		UserDao userDao = DaoFactory.getInstance().getUserDao();
 		try {
+			passwd = new CryptUtil().encryptToMD5(passwd);
 			user = userDao.queryByAccountAndPassword(account, passwd);
 		} catch (DataAccessException e) {
 			log.error(e.getMessage());

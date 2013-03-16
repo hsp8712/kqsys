@@ -9,11 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.oraro.bean.User;
 import net.oraro.common.Constants;
 import net.oraro.db.DBUtil;
 import net.oraro.service.ServicesFactory;
 import net.oraro.service.bean.evt.UserEvt;
+import net.oraro.service.bean.evt.UserPasswordModEvt;
 import net.oraro.service.bean.result.BeanResult;
+import net.oraro.service.bean.result.Result;
+import net.oraro.util.CryptUtil;
 import net.oraro.util.StringUtil;
 
 import org.apache.log4j.Logger;
@@ -43,12 +47,46 @@ public class UserServlet extends HttpServlet {
 			save(request, response);
 		} else if(Opertype.DELETE.equals(opertype)) {
 			delete(request, response);
+		} else if(Opertype.MOD_PASSWORD_VIEW.equals(opertype)) {
+			modPasswordView(request, response);
+		} else if(Opertype.MOD_PASSWORD_SAVE.equals(opertype)) {
+			modPasswordSave(request, response);
 		} else {
 			throw new ServletException("请求的操作不存在<opertype=" + opertype + ">.");
 		}
 		return;
 	}
 	
+	private void modPasswordView(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/page/user_password_mod.jsp").forward(request, response);
+	}
+
+	private void modPasswordSave(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		
+		// 新密码
+		String password = request.getParameter("password");
+		String newPassword = request.getParameter("newPassword");
+		
+		User curUser = (User)request.getSession().getAttribute(LoginAndOutServlet.SESSIONKEY_CURRENT_USER);
+		Integer id = curUser.getId();
+		
+		CryptUtil cryptUtil = new CryptUtil();
+		password = cryptUtil.encryptToMD5(password);
+		newPassword = cryptUtil.encryptToMD5(newPassword);
+		
+		UserPasswordModEvt evt = new UserPasswordModEvt();
+		evt.setId(id);
+		evt.setOpertype(1);
+		evt.setPassword(password);
+		evt.setNewPassword(newPassword);
+		
+		Result result = ServicesFactory.instance().getUserService().userPasswordMod(evt);
+		request.setAttribute(ServletConstants.REQ_MSG, result.getResultDesc());
+		request.getRequestDispatcher("/page/user_password_mod.jsp").forward(request, response);
+	}
+
 	private void delete(HttpServletRequest request, HttpServletResponse response) 
 		throws ServletException, IOException {
 		String id = request.getParameter("id");
@@ -120,6 +158,8 @@ public class UserServlet extends HttpServlet {
 	private void save(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
+		// 获取待修改记录的id
+		String id = request.getParameter("id");
 		// 获取参数
 		String name = request.getParameter("name");				// 用户
 		String empno = request.getParameter("empno");			// 工号
@@ -129,19 +169,31 @@ public class UserServlet extends HttpServlet {
 		
 		if(StringUtil.isEmpty(name)) {
 			request.setAttribute(ServletConstants.REQ_MSG, "姓名不能为空");
-			addView(request, response);
+			if(StringUtil.isEmpty(id)) {
+				addView(request, response);
+			} else {
+				modView(request, response);
+			}
 			return;
 		}
 		
 		if(StringUtil.isEmpty(empno)) {
 			request.setAttribute(ServletConstants.REQ_MSG, "工号不能为空");
-			addView(request, response);
+			if(StringUtil.isEmpty(id)) {
+				addView(request, response);
+			} else {
+				modView(request, response);
+			}
 			return;
 		}
 		
 		if(StringUtil.isEmpty(account)) {
 			request.setAttribute(ServletConstants.REQ_MSG, "账号不能为空");
-			addView(request, response);
+			if(StringUtil.isEmpty(id)) {
+				addView(request, response);
+			} else {
+				modView(request, response);
+			}
 			return;
 		}
 		
@@ -155,13 +207,10 @@ public class UserServlet extends HttpServlet {
 		evt.setTeamId(teamIdInt);
 		evt.setRightgrpId(rightgrpIdInt);
 		
-		// 获取待修改记录的id
-		String id = request.getParameter("id");
-		
 		if(StringUtil.isEmpty(id)) {
 			// id为null表示新增保存
 			evt.setOpertype(1);
-			evt.setPassword(Constants.INIT_PASSWORD);
+			evt.setPassword(new CryptUtil().encryptToMD5(Constants.INIT_PASSWORD));
 		} else {
 			// 修改保存
 			evt.setId(Integer.valueOf(id));
@@ -207,7 +256,9 @@ public class UserServlet extends HttpServlet {
 		public static final String ADD_VIEW = "add_view";	// 新增界面
 		public static final String MOD_VIEW = "mod_view";	// 修改界面
 		public static final String SAVE = "save";			// 保存
-		public static final String DELETE = "delete";		// 保存
+		public static final String DELETE = "delete";		// 删除
+		public static final String MOD_PASSWORD_VIEW = "mod_password_view";		// 修改密码界面
+		public static final String MOD_PASSWORD_SAVE = "mod_password_save";		// 修改密码保存
 	}
 
 }

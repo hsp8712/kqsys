@@ -1,7 +1,6 @@
 package net.oraro.dao;
 
 import net.oraro.dao.impl.CheckinRecordDaoImpl;
-import net.oraro.dao.impl.DailyRecordDaoImpl;
 import net.oraro.dao.impl.RightDaoImpl;
 import net.oraro.dao.impl.TeamDaoImpl;
 import net.oraro.dao.impl.UserDaoImpl;
@@ -17,7 +16,6 @@ public class DaoFactory {
 	private UserDao userDao;
 	private RightDao rightDao;
 	private CheckinRecordDao checkinRecordDao;
-	private DailyRecordDao dailyRecordDao;
 	
 	public TeamDao getTeamDao() {
 		if(teamDao == null) {
@@ -55,16 +53,6 @@ public class DaoFactory {
 		return checkinRecordDao;
 	}
 	
-	/**
-	 * 获取dailyRecord
-	 * @return
-	 */
-	public DailyRecordDao getDailyRecordDao() {
-		if(dailyRecordDao == null) {
-			dailyRecordDao = new DailyRecordDaoImpl();
-		}
-		return dailyRecordDao;
-	}
 	
 	private static DaoFactory daoFactory;
 	

@@ -13,10 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.oraro.bean.Team;
 import net.oraro.bean.User;
 import net.oraro.common.Constants;
 import net.oraro.db.DBUtil;
 import net.oraro.util.SXSSFExcel;
+import net.oraro.util.StringUtil;
 import cn.huangshaoping.page.Page;
 
 /**
@@ -90,11 +92,25 @@ public class DailyRecordServlet extends HttpServlet {
 	private List<Map<String, String>> getDatas(HttpServletRequest request) {
 		// 当前登录用户所在组
 		User curUser = (User)request.getSession().getAttribute(LoginAndOutServlet.SESSIONKEY_CURRENT_USER);
-		int curTeamId = curUser.getTeam().getId();
+		Team team = curUser.getTeam();
+		if(team == null) {
+			return null;
+		}
+		Integer curTeamId = team.getId();
+		if(curTeamId == null) {
+			return null;
+		}
+		
+		// 查询月
+		String month = request.getParameter("month");
 		
 		String sql = "select b.empno, b.name, a.record_date, a.first_time, a.last_time, a.over_time, a.over_time_hour" + 
 				" from kq_dailyrecord a, kq_user b where a.user_id=b.id and user_id in " + 
-				"(select id from kq_user where team_id=" + curTeamId + ")";
+				"(select id from kq_user where team_id=" + curTeamId + ") ";
+		
+		if(!StringUtil.isEmpty(month)) {
+			sql += "and date_format(a.record_date, '%Y%m')='" + month + "'";
+		}
 		
 		List<Map<String, String>> dailyRecords = DBUtil.executeQuery(sql);
 		

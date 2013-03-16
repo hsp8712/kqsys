@@ -4,6 +4,7 @@ drop procedure if exists kqp_gen_dailyrecord;
 drop procedure if exists kqp_team_manage;
 drop procedure if exists kqp_team_mem_manage;
 drop procedure if exists kqp_user_manage;
+drop procedure if exists kqp_user_password_mod;
 drop procedure if exists kqp_rightgrp_manage;
 drop procedure if exists kqp_rightgrp_mem_manage;
 
@@ -346,7 +347,7 @@ end //
 	用户管理
 */
 create procedure kqp_user_manage(
-	in i_opertype 	int,					-- 操作类型 1、新增；2、修改；3、删除；4、密码修改
+	in i_opertype 	int,					-- 操作类型 1、新增；2、修改；3、删除；
 	in i_user_id 	int,					-- 用户id
 	in i_empno		varchar(20),			-- 工号
 	in i_name		varchar(50),			-- 姓名
@@ -370,7 +371,7 @@ label_1:begin
 		leave label_1;
 	end if;
 	
-	if i_opertype not in (1,2,3,4) then
+	if i_opertype not in (1,2,3) then
 		set o_result_code = '1002';		-- 参数格式错误
 		leave label_1;
 	end if;
@@ -392,7 +393,7 @@ label_1:begin
 		end if;
 	end if;
 	
-	if i_opertype not in (3,4) and
+	if i_opertype <> 3 and
 		( i_empno is null or i_name is null or i_account is null or i_rightgrp_id is null )  then
 		rollback;
 		set o_result_code = '1001';		-- 必选参数为空
@@ -431,20 +432,63 @@ label_1:begin
 		leave label_1;
 	end if;
 	
-	-- 修改密码
-	if i_opertype = 4 then
-		if i_password is null then
-			rollback;
-			set o_result_code = '1001';		-- 必选参数为空
-			leave label_1;
-		end if;
-		update kq_user set password=i_password where id=i_user_id;
-		commit;
-		set o_result_code = '0000';		-- 成功
+	rollback;
+end //
+
+/*
+	用户密码修改
+*/
+create procedure kqp_user_password_mod(
+	in i_opertype 	int,					-- 操作类型 1、密码修改
+	in i_user_id 	int,					-- 用户id
+	in i_password		varchar(40),			-- 登录密码
+	in i_new_password	varchar(40),			-- 新登录密码
+	out o_result_code varchar(4)			-- 结果返回码
+	)
+label_1:begin
+	declare v_num int default 0;
+	declare exit handler for sqlexception begin
+		rollback;
+		set o_result_code = '1000';		-- 执行过程异常
+	end;
+	
+	-- 入参合法检验
+	if i_opertype is null then
+		set o_result_code = '1001';		-- 必选参数为空
 		leave label_1;
 	end if;
 	
-	rollback;
+	if i_opertype <> 1 then
+		set o_result_code = '1002';		-- 参数格式错误
+		leave label_1;
+	end if;
+	
+	if i_user_id is null or i_password is null or i_new_password is null then
+		rollback;
+		set o_result_code = '1001';		-- 必选参数为空
+		leave label_1;
+	end if;
+	
+	start transaction;
+	
+	select count(1) into v_num from kq_user where id=i_user_id for update;
+	if v_num <= 0 then
+		rollback;
+		set o_result_code = '3001';		-- 用户不存在
+		leave label_1;
+	end if;
+	
+	select count(1) into v_num from kq_user where id=i_user_id and password=i_password for update;
+	if v_num <= 0 then
+		rollback;
+		set o_result_code = '3002';		-- 密码错误
+		leave label_1;
+	end if;
+	
+	-- 修改密码
+	update kq_user set password=i_new_password where id=i_user_id;
+	commit;
+	set o_result_code = '0000';		-- 成功
 end //
 
 /* 权限组管理 */

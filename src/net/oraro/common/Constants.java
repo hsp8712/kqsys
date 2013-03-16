@@ -12,4 +12,7 @@ public class Constants {
 	
 	/** 初始密码 */
 	public static final String INIT_PASSWORD = "000000";
+	
+	/** DES密钥 */
+	public static final String DES_KEY = "kqsys";
 }

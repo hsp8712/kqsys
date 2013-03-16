@@ -65,7 +65,7 @@ public class LoginAndOutServlet extends HttpServlet {
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 				return;
 			} else {
-				request.setAttribute(ServletConstants.REQ_MSG, "用户不存在.");
+				request.setAttribute(ServletConstants.REQ_MSG, "用户不存在或密码错误.");
 			}
 				
 			

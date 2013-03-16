@@ -1,5 +1,6 @@
 package net.oraro.util;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,7 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Color;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -20,7 +26,13 @@ public class SXSSFExcel {
 	 
 	private static Logger log = Logger.getLogger(SXSSFExcel.class);
 	
-	public static final String TEMP_EXCEL_DIR = SXSSFExcel.class.getResource("/").getPath();
+	public static final String TEMP_EXCEL_DIR = SXSSFExcel.class.getResource("/").getPath() + "temp_excel_dir/";
+	static {
+		File tempExcelDir = new File(TEMP_EXCEL_DIR);
+		if(!tempExcelDir.exists()) {
+			tempExcelDir.mkdirs();
+		}
+	}
 	
 	public static String createExcel(List<Map<String, String>> datas, String[] keys) {
 		 
@@ -35,18 +47,41 @@ public class SXSSFExcel {
 		 }
 		 
 		 SXSSFWorkbook wb = new SXSSFWorkbook(100); // keep 100 rows in memory, exceeding rows will be flushed to disk
-	     Sheet sh = wb.createSheet();
-	     
+		 DataFormat dataFormat = wb.createDataFormat();
+		 Font font = wb.createFont();
+		 font.setFontHeight((short) 210);
+		 font.setFontName("宋体");
+		 CellStyle cellStyle = wb.createCellStyle();
+		 cellStyle.setDataFormat(dataFormat.getFormat("@"));
+		 cellStyle.setFont(font);
+		 cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		 cellStyle.setBorderBottom(CellStyle.BORDER_THIN);
+//		 cellStyle.setBottomBorderColor(HSSFColor.BLUE_GREY.index);
+		 cellStyle.setBorderTop(CellStyle.BORDER_THIN);
+//		 cellStyle.setTopBorderColor(HSSFColor.BLUE_GREY.index);
+		 cellStyle.setBorderLeft(CellStyle.BORDER_THIN);
+//		 cellStyle.setLeftBorderColor(HSSFColor.BLUE_GREY.index);
+		 cellStyle.setBorderRight(CellStyle.BORDER_THIN);
+//		 cellStyle.setRightBorderColor(HSSFColor.BLUE_GREY.index);
+		 
+		 Sheet sh = wb.createSheet();
+		 sh.setDefaultRowHeight((short) 350 );
 	     for (int i = 0; i < datas.size(); i++) {
 	    	 Map<String, String> map = datas.get(i);
 			 if(map == null) continue;
 			 
 			 Row row = sh.createRow(i);
 			 for (int j = 0; j < keys.length; j++) {
+				 
+				 if(i == 0) {
+					 sh.setColumnWidth(j, 15 << 8);
+				 }
+				 
 				String key = keys[j]; 
 			 	String value = map.get(key);
 			 	if(value == null) value = "";
 			 	Cell cell = row.createCell(j);
+			 	cell.setCellStyle(cellStyle);
 			 	cell.setCellValue(value);
 			 }
 	     }

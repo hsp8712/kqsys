@@ -1,5 +1,6 @@
 package net.oraro.service.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import net.oraro.bean.CheckinRecord;
@@ -40,7 +41,7 @@ public class CheckInServiceImpl implements CheckInService{
 	public boolean checkIn(User user) {
 		
 		// 当前时间
-		Date date = new Date();
+		Date date = Calendar.getInstance().getTime();
 		return checkIn(user, date);
 	}
 

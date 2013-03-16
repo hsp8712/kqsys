@@ -1,6 +1,7 @@
 package net.oraro.control;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -75,6 +76,12 @@ public class CheckinServlet extends HttpServlet {
 			
 			// 加载打卡界面
 			request.getRequestDispatcher("/page/checkin.jsp").forward(request, response);
+		} else if(Opertype.SERVER_TIME.equals(opertype)) {
+			
+			log.info("Get Server Time.");
+			String serverTime = Calendar.getInstance().getTimeInMillis() + "";
+			log.info("Server Time in millis:" + serverTime);
+			response.getWriter().print(serverTime);
 		} else {
 			throw new ServletException("请求的操作不存在<opertype=" + opertype + ">.");
 		}
@@ -88,6 +95,7 @@ public class CheckinServlet extends HttpServlet {
 	public class Opertype {
 		public static final String VIEW = "view";				// 打卡界面
 		public static final String CHECKIN = "checkin";			// 打卡
+		public static final String SERVER_TIME = "server_time";			// 打卡
 	}
 
 }

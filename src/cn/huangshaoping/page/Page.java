@@ -1,5 +1,6 @@
 package cn.huangshaoping.page;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,14 @@ public class Page<T> {
 	 */
 	public Page(List<T> recordList, int pageSize, int pageNo, int totalSize) {
 		
+		if(recordList == null) {
+			this.recordList = new ArrayList<T>();
+			this.pageNo = 0;
+			this.totalPage = 0;
+			this.totalSize = 0;
+			return;
+		}
+		
 		this.pageNo = pageNo;
 		this.pageSize = pageSize;
 		this.recordList = recordList;
@@ -64,17 +73,20 @@ public class Page<T> {
 	 */
 	public Page(List<T> recordList, int pageSize, int pageNo) {
 		
+		if(recordList == null) {
+			this.recordList = new ArrayList<T>();
+			this.pageNo = 0;
+			this.totalPage = 0;
+			this.totalSize = 0;
+			return;
+		}
+		
 		this.pageNo = pageNo;
 		this.pageSize = pageSize;
 		
-		if(this.pageSize == 0)
+		if(this.pageSize <= 0)
 		{
-			this.pageSize = 1;
-		}
-		
-		if(recordList == null)
-		{
-			return;
+			this.pageSize = 10;
 		}
 		
 		this.totalSize = recordList.size();

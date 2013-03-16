@@ -8,7 +8,9 @@ import net.oraro.db.CallableParam;
 import net.oraro.db.DBUtil;
 import net.oraro.service.UserService;
 import net.oraro.service.bean.evt.UserEvt;
+import net.oraro.service.bean.evt.UserPasswordModEvt;
 import net.oraro.service.bean.result.BeanResult;
+import net.oraro.service.bean.result.Result;
 import net.oraro.service.bean.result.ResultUtil;
 
 import org.apache.log4j.Logger;
@@ -56,6 +58,32 @@ public class UserServiceImpl implements UserService{
 		bResult.setId(idInt);
 		ResultUtil.updateResultDesc(bResult);
 		return bResult;
+	}
+
+	public Result userPasswordMod(UserPasswordModEvt evt) {
+		
+		if(evt == null) {
+			throw new NullPointerException("Param evt can not be null.");
+		}
+		
+		Map<Integer, CallableParam> paramMap = new HashMap<Integer, CallableParam>();
+		paramMap.put(1, new CallableParam(CallableParam.TYPE_IN, evt.getOpertype()));
+		paramMap.put(2, new CallableParam(CallableParam.TYPE_IN, evt.getId()));
+		paramMap.put(3, new CallableParam(CallableParam.TYPE_IN, evt.getPassword()));
+		paramMap.put(4, new CallableParam(CallableParam.TYPE_IN, evt.getNewPassword()));
+		paramMap.put(5, new CallableParam(CallableParam.TYPE_OUT, null));
+		
+		Result result = new Result();
+		Map<Integer, Object> outParamMap = null;
+		try {
+			outParamMap = DBUtil.execProcedure("kqp_user_password_mod", paramMap);
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+			result.setResultCode("1000");
+		}
+		result.setResultCode(String.valueOf(outParamMap.get(5)));
+		ResultUtil.updateResultDesc(result);
+		return result;
 	}
 
 

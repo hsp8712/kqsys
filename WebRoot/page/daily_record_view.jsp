@@ -28,17 +28,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="jquery-easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="scripts/common.js"></script>
 	<script type="text/javascript" src="scripts/page.js"></script>
+	
 	<script type="text/javascript">
 		$(function(){
 			showMsg('${msg }');
 			$(".tableClass").attr("cellspacing", "1");
 		});
+		
+		function formSub() {
+			document.inputForm.submit();
+		}
+		function formExport() {
+			document.inputForm.action="servlet/DailyRecordServlet?opertype=export";
+			document.inputForm.submit();
+			document.inputForm.action="servlet/DailyRecordServlet?opertype=query";
+		}
 	</script>
   </head>
   
   <body>
-  	<a href="servlet/DailyRecordServlet?opertype=export" class="easyui-linkbutton" style="margin:5px auto 0 5px;" data-options="iconCls:'icon-add'">导出</a>
-  	<form name="inputForm" action="servlet/DailyRecordServlet?opertype=query" method="post"></form>
+  	<form name="inputForm" action="servlet/DailyRecordServlet?opertype=query" method="post">
+  		<span style="margin:5px auto 2px 5px; height: 24px;">年月:<input style="height: 24px;" size="10" type="text" name="month" value="${param.month }">（格式：YYYYMM）</span>
+  		<a href="javascript: formSub();" class="easyui-linkbutton" style="margin:5px auto 0 5px;" data-options="iconCls:'icon-search'">查询</a>
+	  	<a href="javascript: formExport();" class="easyui-linkbutton" style="margin:5px auto 0 5px;" data-options="iconCls:'icon-add'">导出</a>
+  	</form>
   	<H:table name="page" tableClass="tableClass" var="dailyRecord" formName="inputForm" showPageBottom="true">
   		<H:tablefield title="日期" >${dailyRecord.record_date }</H:tablefield>
   		<H:tablefield title="工号" >${dailyRecord.empno }</H:tablefield>
