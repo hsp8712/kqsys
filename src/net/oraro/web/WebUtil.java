@@ -1,11 +1,14 @@
 package net.oraro.web;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -84,5 +87,20 @@ public class WebUtil {
         }
   
         return md5StrBuff.toString();
-    }  
+    } 
+    
+    /**
+     * 发送javascript脚本
+     * @param response
+     * @param script
+     * @throws IOException
+     */
+    public static void sendScript(HttpServletResponse response, String script) throws IOException {
+    	PrintWriter out = response.getWriter();
+    	out.println("<script language=\"javascript\">");
+    	out.println(script);
+    	out.print("</script>");
+    	out.flush();
+    	out.close();
+    }
 }

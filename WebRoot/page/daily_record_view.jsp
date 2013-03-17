@@ -48,9 +48,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
   	<form name="inputForm" action="servlet/DailyRecordServlet?opertype=query" method="post">
-  		<span style="margin:5px auto 2px 5px; height: 24px;">年月:<input style="height: 24px;" size="10" type="text" name="month" value="${param.month }">（格式：YYYYMM）</span>
-  		<a href="javascript: formSub();" class="easyui-linkbutton" style="margin:5px auto 0 5px;" data-options="iconCls:'icon-search'">查询</a>
-	  	<a href="javascript: formExport();" class="easyui-linkbutton" style="margin:5px auto 0 5px;" data-options="iconCls:'icon-add'">导出</a>
+  		<ul class="HeadToolUl">
+  			<li>年月</li>
+  			<li><input size="10" type="text" class="DefInputText" name="month" value="${param.month }">(YYYYMM格式)</li>
+  			<li><a href="javascript: formSub();   " class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a></li>
+  			<li><a href="javascript: formExport();" class="easyui-linkbutton" data-options="iconCls:'icon-add'">导出</a></li>
+  		</ul>
   	</form>
   	<H:table name="page" tableClass="tableClass" var="dailyRecord" formName="inputForm" showPageBottom="true">
   		<H:tablefield title="日期" >${dailyRecord.record_date }</H:tablefield>

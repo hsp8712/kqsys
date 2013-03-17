@@ -44,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			</tr>
   			<tr>
   				<td>权限组名</td>
-  				<td><input type="text" name="rightgrpName" value="${rightgrp.rightgrp_name }" /></td>
+  				<td><input type="text" class="DefInputText" name="rightgrpName" value="${rightgrp.rightgrp_name }" /></td>
   			</tr>
   			<tr>
   				<td colspan="2"><input type="submit" value="保存" /></td>

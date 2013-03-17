@@ -55,7 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  	<H:table name="page" tableClass="tableClass" var="rightgrp" formName="inputForm" showPageBottom="true">
 	  		<H:tablefield title="权限组名" >${rightgrp.rightgrp_name }</H:tablefield>
 			<H:tablefield title="操作" cssClass="operate" >
-				<a href="javascript: del('${rightgrp.id }','${rightgrp.rightgrp_name }')" >删除</a>&nbsp;|
+				<a href="javascript: del('${rightgrp.id }','${rightgrp.rightgrp_name }')"  >删除</a>&nbsp;|
 				<a href="javascript: memView('${rightgrp.id }')" >权限管理</a>
 			</H:tablefield>
 	  	</H:table>

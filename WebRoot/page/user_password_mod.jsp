@@ -68,6 +68,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			
 		}
 	</script>
+	<style type="text/css">
+		.DefInputText {height: 25px;}
+	</style>
   </head>
   
   <body>
@@ -75,15 +78,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<table class="tableClass" cellspacing="1" >
   			<tr>
   				<td>密码</td>
-  				<td><input type="password" name="password" />(6-12位数字或字母)</td>
+  				<td><input type="password" name="password" class="DefInputText" />(6-12位数字或字母)</td>
   			</tr>
   			<tr>
   				<td>确认密码</td>
-  				<td><input type="password" name="password1" />(6-12位数字或字母)</td>
+  				<td><input type="password" name="password1" class="DefInputText" />(6-12位数字或字母)</td>
   			</tr>
   			<tr>
   				<td>密码</td>
-  				<td><input type="password" name="newPassword" />(6-12位数字或字母)</td>
+  				<td><input type="password" name="newPassword" class="DefInputText" />(6-12位数字或字母)</td>
   			</tr>
   			<tr>
   				<td colspan="2"><input type="submit" value="保存" /></td>

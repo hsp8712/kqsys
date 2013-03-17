@@ -1,6 +1,5 @@
 package net.oraro.dao;
 
-import net.oraro.dao.impl.CheckinRecordDaoImpl;
 import net.oraro.dao.impl.RightDaoImpl;
 import net.oraro.dao.impl.TeamDaoImpl;
 import net.oraro.dao.impl.UserDaoImpl;
@@ -15,7 +14,6 @@ public class DaoFactory {
 	private TeamDao teamDao;
 	private UserDao userDao;
 	private RightDao rightDao;
-	private CheckinRecordDao checkinRecordDao;
 	
 	public TeamDao getTeamDao() {
 		if(teamDao == null) {
@@ -40,17 +38,6 @@ public class DaoFactory {
 			rightDao = new RightDaoImpl();
 		}
 		return rightDao;
-	}
-	
-	/**
-	 * 获取userDao
-	 * @return
-	 */
-	public CheckinRecordDao getCheckinRecordDao() {
-		if(checkinRecordDao == null) {
-			checkinRecordDao = new CheckinRecordDaoImpl();
-		}
-		return checkinRecordDao;
 	}
 	
 	

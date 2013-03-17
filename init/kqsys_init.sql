@@ -36,7 +36,7 @@ insert into kq_team values(1,'dev','dev team',null);
 insert into kq_team values(2,'test','test team',null);
 
 /* kq_user */
-insert into kq_user values(1, 'CH0001', 'TOM', 'tom', '670B14728AD9902AECBA32E22FA4F6BD', 1, 1);
+insert into kq_user values(1, 'CH0000', 'admin', 'admin', '670B14728AD9902AECBA32E22FA4F6BD', null, 1);
 insert into kq_user values(2, 'CH0002', 'JIM', 'jim', '670B14728AD9902AECBA32E22FA4F6BD', 1, 3);
 insert into kq_user values(3, 'CH0003', 'LILY', 'lily', '670B14728AD9902AECBA32E22FA4F6BD', 2, 2);
 insert into kq_user values(4, 'CH0004', 'LUCY', 'lucy', '670B14728AD9902AECBA32E22FA4F6BD', 2, 3);
@@ -72,6 +72,8 @@ insert into kq_result_code values('5001', '权限不存在');
 
 insert into kq_result_code values('6001', '考勤统计日期必须小于当前日期');
 insert into kq_result_code values('6002', '考勤记录已存在');
+
+insert into kq_result_code values('7001', '距上次打卡不到两分钟');
 
 commit;
 

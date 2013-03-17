@@ -112,7 +112,7 @@ public class UserServlet extends HttpServlet {
 		
 		String sql = "select a.id, a.empno, a.name, a.account, b.team_name, c.rightgrp_name from kq_user a " +
 				"left join kq_team b on a.team_id=b.id " +
-				"left join kq_rightgrp c on a.rightgrp_id=c.id";
+				"left join kq_rightgrp c on a.rightgrp_id=c.id where a.id<>1";
 		List<Map<String, String>> teams = DBUtil.executeQuery(sql);
 		
 		Page<Map<String, String>> page = new Page<Map<String, String>>(teams, Constants.PAGE_SIZE, pageNo);
@@ -143,7 +143,7 @@ public class UserServlet extends HttpServlet {
 		request.setAttribute("user", user);
 		
 		// 获取权限组集合
-		String rightgrpSql = "select * from kq_rightgrp";
+		String rightgrpSql = "select * from kq_rightgrp where id<>1 order by id desc";
 		List<Map<String, String>> rightgrps = DBUtil.executeQuery(rightgrpSql);
 		request.setAttribute("rightgrps", rightgrps);
 		
@@ -243,8 +243,8 @@ public class UserServlet extends HttpServlet {
 		List<Map<String, String>> teams = DBUtil.executeQuery(sql);
 		request.setAttribute("teams", teams);
 		
-		// 获取权限组集合
-		String rightgrpSql = "select * from kq_rightgrp";
+		// 获取权限组集合，排除超级管理员
+		String rightgrpSql = "select * from kq_rightgrp where id<>1 order by id desc";
 		List<Map<String, String>> rightgrps = DBUtil.executeQuery(rightgrpSql);
 		request.setAttribute("rightgrps", rightgrps);
 		

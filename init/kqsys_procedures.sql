@@ -640,6 +640,7 @@ create procedure kqp_checkin_manage(
 )
 label_1:begin
 	declare v_num int default 0;
+	declare v_last_check_time datetime;
 	declare exit handler for sqlexception begin
 		rollback;
 		set o_result_code = '1000';		-- 执行过程异常
@@ -661,6 +662,13 @@ label_1:begin
 	if v_num <= 0 then
 		rollback;
 		set o_result_code = '3001';		-- 用户不存在
+		leave label_1;
+	end if;
+	
+	select max(check_time) into v_last_check_time from kq_checkinrecord where user_id=i_user_id for update;
+	if adddate(v_last_check_time, interval 2 minute) > i_check_time then
+		rollback;
+		set o_result_code = '7001';		-- 距上次打卡不到两分钟
 		leave label_1;
 	end if;
 	

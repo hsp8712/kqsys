@@ -44,12 +44,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			</tr>
   			<tr>
   				<td>组名</td>
-  				<td><input type="text" name="teamName" value="${team.teamName }" /></td>
+  				<td><input type="text" name="teamName" value="${team.teamName }" class="DefInputText" /></td>
   			</tr>
   			<tr>
   				<td>描述</td>
   				<td>
-  					<textarea name="description" rows="4" cols="30">${team.description }</textarea>
+  					<textarea name="description" rows="4" cols="30" class="DefTextarea">${team.description }</textarea>
   				</td>
   			</tr>
   			<tr>

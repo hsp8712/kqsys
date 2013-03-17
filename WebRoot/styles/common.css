@@ -12,4 +12,9 @@ input { padding: 2px;}
 .tableClass td span { height: 20px; vertical-align: middle; }
 .tableClass .tableClass-Page {height: 20px; margin: 0; padding: 0;}
 
-.querySet { margin: 5px; width: 94%; }
+/* input text */
+.DefInputText { border: 1px solid #c9c9c9; font-size: 15px; padding:4px; }
+.DefTextarea { border: 1px solid #c9c9c9; font-size: 15px; padding:4px; }
+.HeadToolUl { margin:5px;}
+.HeadToolUl	li  { float: left; vertical-align: middle; margin:5px auto 5px 5px; line-height: 26px; height: 26px;  }
+.HeadToolUl	li input {height: 25px;}

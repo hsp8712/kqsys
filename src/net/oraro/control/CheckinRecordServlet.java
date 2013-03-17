@@ -109,7 +109,7 @@ public class CheckinRecordServlet extends HttpServlet {
 		String month = request.getParameter("month");
 		String name  = request.getParameter("name");
 		
-		StringBuffer sqlStrBuf = new StringBuffer("select date_format(a.check_time, '%Y-%m-%d %H:%i:%s') as check_time, ");
+		StringBuffer sqlStrBuf = new StringBuffer("select date_format(a.check_time,'%Y-%m-%d %H:%i:%s') as check_time, ");
 		sqlStrBuf.append("a.check_ip, b.name from kq_checkinrecord a left join kq_user b on a.user_id=b.id ");
 		sqlStrBuf.append("where a.user_id in (select id from kq_user where team_id=");
 		sqlStrBuf.append(curTeamId);
@@ -122,9 +122,9 @@ public class CheckinRecordServlet extends HttpServlet {
 		}
 		
 		if(!StringUtil.isEmpty(month)) {
-			sqlStrBuf.append(" and date_format(a.check_time, '%Y%m')='");
+			sqlStrBuf.append(" and date_format(a.check_time,'%Y%m')='");
 			sqlStrBuf.append(month);
-			sqlStrBuf.append("%'");
+			sqlStrBuf.append("'");
 		}
 		
 		List<Map<String, String>> records = DBUtil.executeQuery(sqlStrBuf.toString());

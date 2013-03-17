@@ -164,7 +164,7 @@ public class RightgrpServlet extends HttpServlet {
 		String pageNoStr = request.getParameter("pageNo");
 		int pageNo = pageNoStr == null ? 0 : Integer.valueOf(pageNoStr);
 		
-		List<Map<String, String>> rightgrps = DBUtil.executeQuery("select * from kq_rightgrp");
+		List<Map<String, String>> rightgrps = DBUtil.executeQuery("select * from kq_rightgrp where id<>1");
 		
 		Page<Map<String, String>> page = new Page<Map<String, String>>(rightgrps, Constants.PAGE_SIZE, pageNo);
 		request.setAttribute(ServletConstants.REQ_PAGE, page);

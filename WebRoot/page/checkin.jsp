@@ -56,10 +56,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			var int=self.setInterval("clock()",1000);
 		});
 	</script>
+	<style type="text/css">
+		.tableClass ul li {float: left; vertical-align: middle; margin-left:5px; height: 20px; line-height: 20px;}
+	</style>
   </head>
   
-  <body>
-  	<form action="servlet/CheckinServlet?opertype=checkin" method="post" >
+  <body onload="document.form0.validateCode.focus();">
+  	<form action="servlet/CheckinServlet?opertype=checkin" name="form0" method="post" >
   		<table class="tableClass" cellspacing="1" >
   			<tr>
   				<td class="title">姓名</td>
@@ -75,7 +78,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			</tr>
   			<tr>
   				<td class="title">验证码</td>
-  				<td><input type="text" name="validateCode" size="5" />&nbsp;<span><img src="image.jsp" /></span></td>
+  				<td>
+  					<ul>
+  						<li><input type="text" name="validateCode" style="height: 20px;" class="DefInputText" size="5" /></li>
+  						<li><img src="image.jsp" /></li>
+  					</ul>
+  				</td>
   			</tr>
   			<tr>
   				<td colspan="2"><input type="submit" value="打卡" /></td>
