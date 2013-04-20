@@ -35,7 +35,7 @@ public class ContextListener implements ServletContextListener {
 		cld.set(Calendar.MINUTE, 0);
 		cld.set(Calendar.SECOND, 0);
 		Date date = cld.getTime();
-		WebTimerTaskManage.getInstance().schedule(new TimerTask() {
+		WebTimerTaskManage.getInstance().scheduleAtFixedRate(new TimerTask() {
 
 			@Override
 			public void run() {
@@ -77,7 +77,7 @@ public class ContextListener implements ServletContextListener {
 		// 清空临时excel文件
 		cld.set(Calendar.HOUR_OF_DAY, 3);
 		date = cld.getTime();
-		WebTimerTaskManage.getInstance().schedule(new TimerTask() {
+		WebTimerTaskManage.getInstance().scheduleAtFixedRate(new TimerTask() {
 
 			@Override
 			public void run() {
