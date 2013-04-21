@@ -1,0 +1,6 @@
+The step to deploy the project:
+	1. Enter the project directory, execute ant command, like this "ant"(Must have installed ant);
+	2. Get the war file "kqsys.war" in the new generated directory "dist";
+	3. Put kqsys.war file into tomcat/webapps directory;
+	4. Get the sql script file kqsys_tables.sql,kqsys_init.sql,kqsys_procedures.sql in "init" dir, and execute in mysql by the order.
+	5. Configurate the context.xml in tomcat/config dir.
