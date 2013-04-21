@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 public class I18nHttpServletRequestWrapper extends HttpServletRequestWrapper {
-	private Map hashMap = new HashMap();
+	private Map<String, Object> hashMap = new HashMap<String, Object>();
 	  private String charset = "iso-8859-1";
 	  public I18nHttpServletRequestWrapper(HttpServletRequest request, String charset) {
 	    super(request);
