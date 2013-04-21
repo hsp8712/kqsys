@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="kqsys" default="dist" basedir=".">
+  <description>Create distribute</description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src" />
+  <property name="lib"  location="WebRoot/WEB-INF/lib"/>
+  <property name="javaee_lib"  location="lib"/>
+  <property name="web_root"  location="WebRoot"/>
+  
+  <property name="dist" location="dist"/>
+  <property name="dist.project" location="${dist}/${ant.project.name}"/>
+  <property name="dist.build"  location="${dist.project}/build"/>
+  <property name="dist.lib"  location="${dist.project}/WEB-INF/lib"/>
+  <property name="dist.classes"  location="${dist.project}/WEB-INF/classes"/>
+  
+
+  <path id="classpath">
+  	<fileset dir="${lib}">
+  		<include name="**/*.jar" />
+  	</fileset>
+  	<fileset dir="${javaee_lib}">
+  		<include name="**/*.jar" />
+  	</fileset>
+  </path>
+  
+  
+  <target name="init" depends="clean">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the init directory structure -->
+    <mkdir dir="${dist}"/>
+    <mkdir dir="${dist.project}"/>
+    <mkdir dir="${dist.build}"/>
+    <mkdir dir="${dist.lib}"/>
+    <mkdir dir="${dist.classes}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <!-- Compile the java code -->
+    <javac srcdir="${src}" destdir="${dist.build}" includeantruntime="false" >
+    	<compilerarg value="-Xlint:unchecked" />
+    	<classpath refid="classpath" />
+    </javac>
+  </target>
+  
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar jarfile="${dist.lib}/${ant.project.name}-${DSTAMP}.jar" basedir="${dist.build}"/>
+    <war destfile="${dist}/${ant.project.name}.war" webxml="${web_root}/WEB-INF/web.xml">
+    	<fileset dir="${web_root}" >
+    		<exclude name="**/*.jar" />
+    	</fileset>
+    	<classes dir="${src}">
+    		<include name="**/*.template" />
+    		<include name="**/*.xml" />
+    		<include name="**/*.properties" />
+    		<include name="**/*.tld" />
+    	</classes>
+    	<lib dir="${dist.lib}"/>
+    	<lib dir="${lib}"/>
+    </war>
+    <delete dir="${dist.project}"/>
+  </target>
+  
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${dist} directory trees -->
+    <delete dir="${dist}"/>
+  </target>
+</project>
