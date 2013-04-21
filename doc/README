@@ -1,7 +1,0 @@
-
-1. Execute db script.
-	Enter folder "db_script", first execute file "kqsys_tables.sql", second execute file "kqsys_init.sql", last execute file "kqsys_procedures.sql".
-	
-2. Put kqsys-1.0.war file into tomcat_home/webapps.
-
-3. Start tomcat server.

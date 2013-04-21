@@ -10,11 +10,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 /**
- * <p>Title: </p>
- * <p>Description: Poject Tao</p>
- * <p>Copyright: Copyright (c) 2004</p>
- * <p>Company: ZTE Corp.</p>
- * @author Jackie Lee
  * @version 1.0
  */
 
@@ -25,7 +20,8 @@ public class ResourceTemplate
 	
     private static ResourceTemplate instance;
 
-    private Map templates = new HashMap();
+    private Map<String, String> templates = new HashMap<String, String>();
+    
 
     private ResourceTemplate()
     {
