@@ -82,11 +82,8 @@ public class ContextListener implements ServletContextListener {
 			@Override
 			public void run() {
 				
-<<<<<<< HEAD
 				log.info("Clear temp excel file begin.");
 				
-=======
->>>>>>> 14e01fcf5cadd7ebb271fba03efe85eb98b853aa
 				File file = new File(SXSSFExcel.TEMP_EXCEL_DIR);
 				File[] files = file.listFiles(new FilenameFilter() {
 
@@ -116,10 +113,7 @@ public class ContextListener implements ServletContextListener {
 					}
 				}
 				
-<<<<<<< HEAD
 				log.info("Clear temp excel file end.");
-=======
->>>>>>> 14e01fcf5cadd7ebb271fba03efe85eb98b853aa
 			}
 		}, date, 24 * 60 * 60 * 1000);
 		
