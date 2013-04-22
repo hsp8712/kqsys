@@ -38,7 +38,7 @@
   <target name="compile" depends="init"
         description="compile the source " >
     <!-- Compile the java code -->
-    <javac srcdir="${src}" destdir="${dist.build}" includeantruntime="false" >
+    <javac srcdir="${src}" destdir="${dist.build}" includeantruntime="false" encoding="utf-8" >
     	<compilerarg value="-Xlint:unchecked" />
     	<classpath refid="classpath" />
     </javac>
