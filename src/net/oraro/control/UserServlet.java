@@ -9,14 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.oraro.bean.User;
 import net.oraro.common.Constants;
 import net.oraro.db.DBUtil;
 import net.oraro.service.ServicesFactory;
 import net.oraro.service.bean.evt.UserEvt;
-import net.oraro.service.bean.evt.UserPasswordModEvt;
 import net.oraro.service.bean.result.BeanResult;
-import net.oraro.service.bean.result.Result;
 import net.oraro.util.CryptUtil;
 import net.oraro.util.StringUtil;
 
@@ -47,46 +44,12 @@ public class UserServlet extends HttpServlet {
 			save(request, response);
 		} else if(Opertype.DELETE.equals(opertype)) {
 			delete(request, response);
-		} else if(Opertype.MOD_PASSWORD_VIEW.equals(opertype)) {
-			modPasswordView(request, response);
-		} else if(Opertype.MOD_PASSWORD_SAVE.equals(opertype)) {
-			modPasswordSave(request, response);
 		} else {
 			throw new ServletException("请求的操作不存在<opertype=" + opertype + ">.");
 		}
 		return;
 	}
 	
-	private void modPasswordView(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/page/user_password_mod.jsp").forward(request, response);
-	}
-
-	private void modPasswordSave(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		
-		// 新密码
-		String password = request.getParameter("password");
-		String newPassword = request.getParameter("newPassword");
-		
-		User curUser = (User)request.getSession().getAttribute(LoginAndOutServlet.SESSIONKEY_CURRENT_USER);
-		Integer id = curUser.getId();
-		
-		CryptUtil cryptUtil = new CryptUtil();
-		password = cryptUtil.encryptToMD5(password);
-		newPassword = cryptUtil.encryptToMD5(newPassword);
-		
-		UserPasswordModEvt evt = new UserPasswordModEvt();
-		evt.setId(id);
-		evt.setOpertype(1);
-		evt.setPassword(password);
-		evt.setNewPassword(newPassword);
-		
-		Result result = ServicesFactory.instance().getUserService().userPasswordMod(evt);
-		request.setAttribute(ServletConstants.REQ_MSG, result.getResultDesc());
-		request.getRequestDispatcher("/page/user_password_mod.jsp").forward(request, response);
-	}
-
 	private void delete(HttpServletRequest request, HttpServletResponse response) 
 		throws ServletException, IOException {
 		String id = request.getParameter("id");
@@ -257,8 +220,6 @@ public class UserServlet extends HttpServlet {
 		public static final String MOD_VIEW = "mod_view";	// 修改界面
 		public static final String SAVE = "save";			// 保存
 		public static final String DELETE = "delete";		// 删除
-		public static final String MOD_PASSWORD_VIEW = "mod_password_view";		// 修改密码界面
-		public static final String MOD_PASSWORD_SAVE = "mod_password_save";		// 修改密码保存
 	}
 
 }

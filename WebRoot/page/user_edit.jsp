@@ -44,18 +44,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			</tr>
   			<tr>
   				<td>姓名</td>
-  				<td><input type="text" name="name" value="${user.name }" /></td>
+  				<td><input type="text" name="name" value="${user.name }" class="DefInputText" /></td>
   			</tr>
   			<tr>
   				<td>工号</td>
   				<td>
-  					<input type="text" name="empno" value="${user.empno }" />
+  					<input type="text" name="empno" value="${user.empno }" class="DefInputText" />
   				</td>
   			</tr>
   			<tr>
   				<td>账号</td>
   				<td>
-  					<input type="text" name="account" value="${user.account }" />
+  					<input type="text" name="account" value="${user.account }" class="DefInputText" />
   				</td>
   			</tr>
   			<tr>
@@ -73,7 +73,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  						</select>
   						</c:when>
   						<c:otherwise>
-  							<input name="team" type="hidden" value="${user.team_id }" />
+  							<input name="team" type="hidden" value="${user.team_id }"  />
   							${user.team_name }
   						</c:otherwise>
   					</c:choose>

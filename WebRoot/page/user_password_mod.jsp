@@ -32,35 +32,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 		function valPassword(formObj) {
 			var password = formObj.password;
-			var password1 = formObj.password1;
 			var newPassword = formObj.newPassword;
+			var newPassword1 = formObj.newPassword1;
 			
 			if(password.value == null || password.value == ''
-				|| password1.value == null || password1.value == ''
+				|| newPassword1.value == null || newPassword1.value == ''
 				|| newPassword.value == null || newPassword.value == '') {
-				alert("密码、确认密码、新密码均不能为空！");
+				alert("<原密码>、<新密码>、<确认新密码>均不能为空！");
 				return false;
 			}
 			
 			var reg = /^[0-9a-zA-Z]{6,12}$/;
 			if(!reg.test(password.value)) {
-				alert("密码格式错误！");
+				alert("<原密码>格式错误！");
 				password.focus();
 				return false;
 			}
-			if(!reg.test(password1.value)) {
-				alert("确认密码格式错误！");
-				password1.focus();
-				return false;
-			}
-			if(password.value != password1.value) {
-				alert("确认密码与密码不匹配！");
-				password1.focus();
-				return false;
-			}
 			if(!reg.test(newPassword.value)) {
-				alert("新密码格式错误！");
+				alert("<新密码>格式错误！");
 				newPassword.focus();
+				return false;
+			}
+			if(!reg.test(newPassword1.value)) {
+				alert("<确认新密码>格式错误！");
+				newPassword1.focus();
+				return false;
+			}
+			if(newPassword.value != newPassword1.value) {
+				alert("<确认新密码>与<新密码>不匹配！");
+				newPassword1.focus();
 				return false;
 			}
 			
@@ -74,19 +74,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-  	<form action="servlet/UserServlet?opertype=mod_password_save" method="post" onsubmit="return valPassword(this);" >
+  	<form action="servlet/UserPasswordServlet?opertype=mod_password_save" method="post" onsubmit="return valPassword(this);" >
   		<table class="tableClass" cellspacing="1" >
   			<tr>
-  				<td>密码</td>
+  				<td>原密码</td>
   				<td><input type="password" name="password" class="DefInputText" />(6-12位数字或字母)</td>
   			</tr>
   			<tr>
-  				<td>确认密码</td>
-  				<td><input type="password" name="password1" class="DefInputText" />(6-12位数字或字母)</td>
+  				<td>新密码</td>
+  				<td><input type="password" name="newPassword" class="DefInputText" />(6-12位数字或字母)</td>
   			</tr>
   			<tr>
-  				<td>密码</td>
-  				<td><input type="password" name="newPassword" class="DefInputText" />(6-12位数字或字母)</td>
+  				<td>确认新密码</td>
+  				<td><input type="password" name="newPassword1" class="DefInputText" />(6-12位数字或字母)</td>
   			</tr>
   			<tr>
   				<td colspan="2"><input type="submit" value="保存" /></td>

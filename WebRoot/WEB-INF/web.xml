@@ -20,6 +20,10 @@
     <filter-name>SessionFilter</filter-name>
     <filter-class>net.oraro.filter.SessionFilter</filter-class>
   </filter>
+  <filter>
+    <filter-name>RightFilter</filter-name>
+    <filter-class>net.oraro.filter.RightFilter</filter-class>
+  </filter>
   
   <filter-mapping>
     <filter-name>i18nservletfilter</filter-name>
@@ -32,6 +36,10 @@
   <filter-mapping>
     <filter-name>SessionFilter</filter-name>
     <url-pattern>/page/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>RightFilter</filter-name>
+    <url-pattern>/servlet/*</url-pattern>
   </filter-mapping>
   
   <servlet>
@@ -62,6 +70,10 @@
     <servlet-name>UserServlet</servlet-name>
     <servlet-class>net.oraro.control.UserServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>UserPasswordServlet</servlet-name>
+    <servlet-class>net.oraro.control.UserPasswordServlet</servlet-class>
+  </servlet>
    <servlet>
     <description>rightgrp</description>
     <display-name>rightgrp</display-name>
@@ -73,6 +85,10 @@
     <display-name>checkin record</display-name>
     <servlet-name>CheckinRecordServlet</servlet-name>
     <servlet-class>net.oraro.control.CheckinRecordServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>MyCheckinRecordServlet</servlet-name>
+    <servlet-class>net.oraro.control.MyCheckinRecordServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -96,12 +112,20 @@
     <url-pattern>/servlet/UserServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+    <servlet-name>UserPasswordServlet</servlet-name>
+    <url-pattern>/servlet/UserPasswordServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>RightgrpServlet</servlet-name>
     <url-pattern>/servlet/RightgrpServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>CheckinRecordServlet</servlet-name>
     <url-pattern>/servlet/CheckinRecordServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MyCheckinRecordServlet</servlet-name>
+    <url-pattern>/servlet/MyCheckinRecordServlet</url-pattern>
   </servlet-mapping>
   
   <session-config>
