@@ -43,13 +43,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</style>
   </head>
   
-  <body>
+  <body onload="document.loginForm.account.focus();">
     <div id="main_wrap">
     	<div id="main_center_wrap">
 	    	<div style="height:100px; "></div>
 	    	<div style="height:20px; ">考勤系统v1.0</div>
 	    	<div style="border: 1px solid #ccc; height: 300px; text-align: center; background-color: #efefef;">
-				 <form action="servlet/LoginAndOutServlet" method="post" >
+				 <form name="loginForm" action="servlet/LoginAndOutServlet" method="post" >
 				 	<input type="hidden" name="opertype" value="0" />
 				  	<ul>
 				  		<li>用户名&nbsp;&nbsp;<input class="DefInputText" style="height: 24px; margin-left: 1px;" type="text" name="account" /></li>
