@@ -105,6 +105,8 @@ public class MyCheckinRecordServlet extends HttpServlet {
 			sqlStrBuf.append("'");
 		}
 		
+		sqlStrBuf.append(" order by a.check_time desc");
+		
 		List<Map<String, String>> records = DBUtil.executeQuery(sqlStrBuf.toString());
 		return records;
 	}
