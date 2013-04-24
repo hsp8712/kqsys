@@ -52,7 +52,7 @@
     <jar jarfile="${dist.lib}/${ant.project.name}-${DSTAMP}.jar" basedir="${dist.build}"/>
     <war destfile="${dist}/${ant.project.name}.war" webxml="${web_root}/WEB-INF/web.xml">
     	<fileset dir="${web_root}" >
-    		<exclude name="**/*.jar" />
+    		<exclude name="WEB-INF/" />
     	</fileset>
     	<classes dir="${src}">
     		<include name="**/*.template" />
