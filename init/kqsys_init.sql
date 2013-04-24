@@ -6,11 +6,12 @@ insert into kq_config(config_name, config_value) values('over_time', '18:00:00')
 /* kq_right */
 insert into kq_right values(1,'在线打卡','servlet/CheckinServlet?opertype=view');
 insert into kq_right values(2,'用户管理','servlet/UserServlet?opertype=view');
-insert into kq_right values(3,'密码修改','servlet/UserServlet?opertype=mod_password_view');
+insert into kq_right values(3,'密码修改','servlet/UserPasswordServlet?opertype=mod_password_view');
 insert into kq_right values(4,'权限组管理','servlet/RightgrpServlet?opertype=view');
 insert into kq_right values(5,'组管理','servlet/TeamServlet?opertype=view');
-insert into kq_right values(6,'组打卡记录','servlet/CheckinRecordServlet?opertype=view');
-insert into kq_right values(7,'组考勤记录','servlet/DailyRecordServlet?opertype=query');
+insert into kq_right values(6,'我的打卡记录','servlet/MyCheckinRecordServlet?opertype=view_my');
+insert into kq_right values(7,'组打卡记录','servlet/CheckinRecordServlet?opertype=view');
+insert into kq_right values(8,'组考勤记录','servlet/DailyRecordServlet?opertype=query');
 
 insert into kq_rightgrp values(1,'超级管理员');
 insert into kq_rightgrp values(2,'组管理员');
@@ -26,9 +27,11 @@ insert into kq_rightgrp_right values(null,2,1);
 insert into kq_rightgrp_right values(null,2,3);
 insert into kq_rightgrp_right values(null,2,6);
 insert into kq_rightgrp_right values(null,2,7);
+insert into kq_rightgrp_right values(null,2,8);
 
 insert into kq_rightgrp_right values(null,3,1);
 insert into kq_rightgrp_right values(null,3,3);
+insert into kq_rightgrp_right values(null,3,6);
 
 
 /* kq_team */
