@@ -39,27 +39,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<input type="hidden" name="id" value="${user.id }" />
   		<table class="tableClass" cellspacing="1" >
   			<tr>
-  				<td>操作</td>
+  				<th class="title">操作</th>
   				<td>${empty user.id ? '新增' : '修改'}用户</td>
   			</tr>
   			<tr>
-  				<td>姓名</td>
+  				<th class="title">姓名</th>
   				<td><input type="text" name="name" value="${user.name }" class="DefInputText" /></td>
   			</tr>
   			<tr>
-  				<td>工号</td>
+  				<th class="title">工号</th>
   				<td>
   					<input type="text" name="empno" value="${user.empno }" class="DefInputText" />
   				</td>
   			</tr>
   			<tr>
-  				<td>账号</td>
+  				<th class="title">账号</th>
   				<td>
   					<input type="text" name="account" value="${user.account }" class="DefInputText" />
   				</td>
   			</tr>
   			<tr>
-  				<td>所属组</td>
+  				<th class="title">所属组</th>
   				<td>
   					<c:choose>
   						<c:when test="${empty user.id }">
@@ -80,7 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				</td>
   			</tr>
   			<tr>
-  				<td>权限组</td>
+  				<th class="title">权限组</th>
   				<td>
   					<select name="rightgrp">
 	  				<c:forEach var="rightgrp" items="${rightgrps }">
@@ -92,7 +92,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				</td>
   			</tr>
   			<tr>
-  				<td colspan="2"><input type="submit" value="保存" /></td>
+  				<td colspan="2"><input type="submit" class="DefButton" value="保存" /></td>
   			</tr>
   		</table>
   	</form>

@@ -50,7 +50,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
   	<div class="main_wrap">
-  		<a href="servlet/RightgrpServlet?opertype=add_view" class="easyui-linkbutton" style="margin:5px auto 0 5px;" data-options="iconCls:'icon-add'">新增</a>
+  		<button onclick="location.href='servlet/RightgrpServlet?opertype=add_view'" type="button" class="DefButton" >新增</button>
 	  	<form name="inputForm" action="servlet/RightgrpServlet?opertype=view" method="post">
 	  	<H:table name="page" tableClass="tableClass" var="rightgrp" formName="inputForm" showPageBottom="true">
 	  		<H:tablefield title="权限组名" >${rightgrp.rightgrp_name }</H:tablefield>

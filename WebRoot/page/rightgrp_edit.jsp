@@ -39,15 +39,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<input type="hidden" name="id" value="${rightgrp.id }" />
   		<table class="tableClass" cellspacing="1" >
   			<tr>
-  				<td>操作</td>
+  				<th class="title">操作</th>
   				<td>${empty rightgrp.id ? '新增' : '修改'}</td>
   			</tr>
   			<tr>
-  				<td>权限组名</td>
+  				<th class="title">权限组名</th>
   				<td><input type="text" class="DefInputText" name="rightgrpName" value="${rightgrp.rightgrp_name }" /></td>
   			</tr>
   			<tr>
-  				<td colspan="2"><input type="submit" value="保存" /></td>
+  				<td colspan="2"><input type="submit" class="DefButton" value="保存" /></td>
   			</tr>
   		</table>
   	</form>

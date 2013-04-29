@@ -68,28 +68,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			
 		}
 	</script>
-	<style type="text/css">
-		.DefInputText {height: 25px;}
-	</style>
   </head>
   
   <body>
   	<form action="servlet/UserPasswordServlet?opertype=mod_password_save" method="post" onsubmit="return valPassword(this);" >
   		<table class="tableClass" cellspacing="1" >
   			<tr>
-  				<td>原密码</td>
+  				<th class="title">原密码</th>
   				<td><input type="password" name="password" class="DefInputText" />(6-12位数字或字母)</td>
   			</tr>
   			<tr>
-  				<td>新密码</td>
+  				<th class="title">新密码</th>
   				<td><input type="password" name="newPassword" class="DefInputText" />(6-12位数字或字母)</td>
   			</tr>
   			<tr>
-  				<td>确认新密码</td>
+  				<th class="title">确认新密码</th>
   				<td><input type="password" name="newPassword1" class="DefInputText" />(6-12位数字或字母)</td>
   			</tr>
   			<tr>
-  				<td colspan="2"><input type="submit" value="保存" /></td>
+  				<td colspan="2"><button class="DefButton" type="submit" >保存</button></td>
   			</tr>
   		</table>
   	</form>

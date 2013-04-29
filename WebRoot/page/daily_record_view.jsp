@@ -21,9 +21,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="description" content="This is my page">
 	<link rel="stylesheet" type="text/css" href="styles/reset.css">
 	<link rel="stylesheet" type="text/css" href="styles/common.css">
+	<link rel="stylesheet" type="text/css" href="datepicker/pikaday.css">
 	
 	<link rel="stylesheet" type="text/css" href="jquery-easyui/themes/metro/easyui.css">
 	<link rel="stylesheet" type="text/css" href="jquery-easyui/themes/icon.css">
+	
+	<script type="text/javascript" src="datepicker/moment.min.js" ></script>
+	
 	<script type="text/javascript" src="jquery-easyui/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="jquery-easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="scripts/common.js"></script>
@@ -49,10 +53,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   	<form name="inputForm" action="servlet/DailyRecordServlet?opertype=query" method="post">
   		<ul class="HeadToolUl">
-  			<li>年月</li>
-  			<li><input size="10" type="text" class="DefInputText" name="month" value="${param.month }">(YYYYMM格式)</li>
-  			<li><a href="javascript: formSub();   " class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a></li>
-  			<li><a href="javascript: formExport();" class="easyui-linkbutton" data-options="iconCls:'icon-add'">导出</a></li>
+  			<li>日期范围</li>
+  			<li>
+  				<input size="10" type="text" readonly="readonly" id="startDate" class="DatepickerText" name="startDate" value="${param.startDate }">
+  			</li>
+  			<li>至</li>
+  			<li>
+  				<input size="10" type="text" readonly="readonly" id="endDate" class="DatepickerText" name="endDate" value="${param.endDate }">
+  			</li>
+  			<li><button onclick="formSub();" type="button" class="DefButton" >查询</button></li>
+  			<li><button onclick="formExport();" type="button" class="DefButton" >导出</button></li>
   		</ul>
   	</form>
   	<H:table name="page" tableClass="tableClass" var="dailyRecord" formName="inputForm" showPageBottom="true">
@@ -64,5 +74,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<H:tablefield title="加班开始时间" >${dailyRecord.over_time }</H:tablefield>
 		<H:tablefield title="加班时长" >${dailyRecord.over_time_hour }</H:tablefield>
   	</H:table>
+  	
+  <script type="text/javascript" src="datepicker/pikaday.js" ></script>
+  <script type="text/javascript">
+  	
+  	var startDateObj = document.getElementById('startDate');
+  	var endDateObj = document.getElementById('endDate');
+  	var startDatePicker = new Pikaday({
+	    field: startDateObj,
+	    format:'YYYY-MM-DD',
+	    defaultDate:new Date(),
+	    setDefaultDate: (startDateObj.value==null||startDateObj.value=='')?true:false,
+	    firstDay: 0,
+	    yearRange: [2000,2020]
+	});
+	var endDatePicker = new Pikaday({
+	    field: endDateObj,
+	    format:'YYYY-MM-DD',
+	    defaultDate:new Date(),
+	    setDefaultDate:(endDateObj.value==null||endDateObj.value=='')?true:false,
+	    firstDay: 0,
+	    yearRange: [2000,2020]
+	});
+  </script>
   </body>
 </html>

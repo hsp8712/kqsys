@@ -39,21 +39,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<input type="hidden" name="id" value="${team.id }" />
   		<table class="tableClass" cellspacing="1" >
   			<tr>
-  				<td>操作</td>
+  				<th class="title">操作</th>
   				<td>${empty team.id ? '新增' : '修改'}组</td>
   			</tr>
   			<tr>
-  				<td>组名</td>
+  				<th class="title">组名</th>
   				<td><input type="text" name="teamName" value="${team.teamName }" class="DefInputText" /></td>
   			</tr>
   			<tr>
-  				<td>描述</td>
+  				<th class="title">描述</th>
   				<td>
   					<textarea name="description" rows="4" cols="30" class="DefTextarea">${team.description }</textarea>
   				</td>
   			</tr>
   			<tr>
-  				<td>管理员</td>
+  				<th class="title">管理员</th>
   				<td>
   					<select name="manager">
   						<option value="" >-- 请选择 --</option>
@@ -66,7 +66,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				</td>
   			</tr>
   			<tr>
-  				<td colspan="2"><input type="submit" value="保存" /></td>
+  				<td colspan="2"><input type="submit" class="DefButton" value="保存" /></td>
   			</tr>
   		</table>
   	</form>

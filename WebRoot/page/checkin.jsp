@@ -23,10 +23,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="jquery-easyui/themes/metro/easyui.css">
 	<link rel="stylesheet" type="text/css" href="jquery-easyui/themes/icon.css">
 	
-	<style type="text/css">
-		.title {width: 120px;}
-	</style>
-	
 	<script type="text/javascript" src="jquery-easyui/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="jquery-easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="scripts/common.js"></script>
@@ -65,28 +61,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<form action="servlet/CheckinServlet?opertype=checkin" name="form0" method="post" >
   		<table class="tableClass" cellspacing="1" >
   			<tr>
-  				<td class="title">姓名</td>
+  				<th class="title">姓名</th>
   				<td>${CURRENT_USER.name }</td>
   			</tr>
   			<tr>
-  				<td class="title">所属组</td>
+  				<th class="title">所属组</th>
   				<td>${CURRENT_USER.team.teamName }</td>
   			</tr>
   			<tr>
-  				<td class="title">当前时间</td>
+  				<th class="title">当前时间</th>
   				<td id="now"></td>
   			</tr>
   			<tr>
-  				<td class="title">验证码</td>
+  				<th class="title">验证码</th>
   				<td>
   					<ul>
-  						<li><input type="text" name="validateCode" style="height: 20px;" class="DefInputText" size="5" /></li>
+  						<li><input type="text" name="validateCode" style="height: 20px; line-height: 20px;" class="DefInputText" size="5" /></li>
   						<li><img src="image.jsp" /></li>
   					</ul>
   				</td>
   			</tr>
   			<tr>
-  				<td colspan="2"><input type="submit" value="打卡" /></td>
+  				<td colspan="2">
+  					<button style="margin-left: 10px;" class="DefButton" type="submit">打卡</button>
+  				</td>
   			</tr>
   		</table>
   	</form>

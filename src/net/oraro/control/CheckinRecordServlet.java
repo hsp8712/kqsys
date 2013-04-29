@@ -106,7 +106,9 @@ public class CheckinRecordServlet extends HttpServlet {
 			return null;
 		}
 		
-		String month = request.getParameter("month");
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		
 		String name  = request.getParameter("name");
 		
 		StringBuffer sqlStrBuf = new StringBuffer("select date_format(a.check_time,'%Y-%m-%d %H:%i:%s') as check_time, ");
@@ -121,9 +123,15 @@ public class CheckinRecordServlet extends HttpServlet {
 			sqlStrBuf.append("%'");
 		}
 		
-		if(!StringUtil.isEmpty(month)) {
-			sqlStrBuf.append(" and date_format(a.check_time,'%Y%m')='");
-			sqlStrBuf.append(month);
+		if(!StringUtil.isEmpty(startDate)) {
+			sqlStrBuf.append(" and date_format(a.check_time,'%Y-%m-%d')>='");
+			sqlStrBuf.append(startDate);
+			sqlStrBuf.append("'");
+		}
+		
+		if(!StringUtil.isEmpty(endDate)) {
+			sqlStrBuf.append(" and date_format(a.check_time,'%Y-%m-%d')<='");
+			sqlStrBuf.append(endDate);
 			sqlStrBuf.append("'");
 		}
 		

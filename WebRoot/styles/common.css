@@ -1,20 +1,43 @@
 ﻿@CHARSET "UTF-8";
 
-html, body, div, span, table, tr, td, ul, li, input, select, a { font-size: 13px; font-family: '宋体'; }
-input { padding: 2px;}
+html, body, div, span, table, tr, td, ul, li, input, select, a, button { font-size: 13px; font-family: '宋体'; }
 #main_wrap { width: 100%; height: 100%; text-align:center;  }
 
 /* 表单table */
-.tableClass { margin: 5px; width: 98%; background-color: #e1e1e1;  }
-.tableClass td {background-color: #fafafa; height: 27px; padding: 5px; vertical-align: middle; }
-.tableClass th {background-color: #eeeeee; height: 27px; padding: 5px; vertical-align: middle;}
+.tableClass { width: 100%; background-color: #fff;  }
+.tableClass td {background-color: #ededed; height: 27px; padding: 5px; vertical-align: middle; }
+.tableClass th {background-color: #444; color: #fff; height: 27px; padding: 5px; vertical-align: middle;}
 .tableClass td input { height: 22px; vertical-align: middle; }
 .tableClass td span { height: 20px; vertical-align: middle; }
-.tableClass .tableClass-Page {height: 20px; margin: 0; padding: 0;}
+.tableClass .pageTd {background-color: #555; color: #fff; text-align: right; }
+.tableClass .tableClass-Page {height: 15px; margin: 0; padding: 0;}
+
+.tableClass .title { text-align: left; width: 120px; font-weight: normal; }
 
 /* input text */
-.DefInputText { border: 1px solid #c9c9c9; font-size: 15px; padding:4px; }
-.DefTextarea { border: 1px solid #c9c9c9; font-size: 15px; padding:4px; }
+.DefInputText { vertical-align: middle; border: 1px solid #c9c9c9; height:25px; line-height: 25px; padding-left:2px;}
+.DefTextarea { border: 1px solid #c9c9c9;   }
+.DatepickerText { vertical-align: middle; border: 1px solid #c9c9c9; height:25px; line-height: 25px; cursor: pointer; padding-left:2px;}
+
+.DefButton { 
+	height: 25px; 
+	line-height:25px; 
+	min-width: 50px; 
+	width: 50px; 
+	text-align: center; 
+	vertical-align: middle; 
+	font-size: 12px; 
+	font-weight:bold;  
+	background-color: #666; 
+	color: #fff; 
+	border: 1px solid #666; 
+	border-bottom: 1px solid #000; 
+	border-right: 1px solid #333; 
+	cursor: pointer;
+}
+
+.DefButton:HOVER { background-color: #999;  }
+
 .HeadToolUl { margin:5px;}
 .HeadToolUl	li  { float: left; vertical-align: middle; margin:5px auto 5px 5px; line-height: 26px; height: 26px;  }
 .HeadToolUl	li input {height: 25px;}
