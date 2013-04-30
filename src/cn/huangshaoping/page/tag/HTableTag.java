@@ -2,9 +2,11 @@ package cn.huangshaoping.page.tag;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -151,7 +153,7 @@ public class HTableTag extends BodyTagSupport {
 			out.append(finalJspString.toString());
 			
 			if(!haveNoDatas && showPageBottom) {
-				out.append("<tr><td colspan=\"");
+				out.append("<tr><td class='pageTd' colspan=\"");
 				out.append(String.valueOf(titles.size()));
 				out.append("\">");
 				out.append(getPageBottomHtml());
@@ -213,6 +215,13 @@ public class HTableTag extends BodyTagSupport {
 			tableBottomHtml = tableBottomHtml.replaceAll("#lastStyle", 
 					pageNo == ( totalPage - 1 ) ? "" : "cursor:pointer;");
 		}
+		
+		ResourceBundle bundle = ResourceBundle.getBundle("cn.huangshaoping.page.tag.HTableBottom");
+		tableBottomHtml = MessageFormat.format(tableBottomHtml, 
+				bundle.getString("PAGE_MSG_000"), 
+				bundle.getString("PAGE_MSG_001"), 
+				bundle.getString("PAGE_MSG_002"), 
+				bundle.getString("PAGE_MSG_003") );
 		
 		return tableBottomHtml;
 	}

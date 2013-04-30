@@ -27,34 +27,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="jquery-easyui/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="jquery-easyui/jquery.easyui.min.js"></script>
 	<style type="text/css">
-		#menu_ul {width: 100%; }
-		#menu_ul li {line-height: 40px; height: 45px; text-align: center;}
-		#menu_ul li button {border: 1px solid #bbccff; width: 90%; margin: 0 auto; line-height: 25px; cursor: pointer; }
+		#menu_ul {width: 100%; margin: 1px;}
+		#menu_ul li {line-height: 30px; height: 30px; text-align: center; }
+		#menu_ul li button {border: 1px solid #444; background-color: #444; color: #fff; width: 100%; margin: 0 0 1px 0; line-height: 25px; cursor: pointer; }
+		#menu_ul li button:HOVER { background-color: #777; }
 	</style>
+	<script type="text/javascript">
+		
+		// Turn to the menu window
+		function turnTo(link, name){
+			document.getElementById('main_frame').src=link;
+		}
+	</script>
   </head>
   
   <body>
   	<div id="main_wrap">
-  		<div class="easyui-layout" style="width:900px;height:100%; text-align:left; margin: 0 auto; ">
-			<div data-options="region:'north'" style="height:90px;overflow:hidden;padding:10px">
-				<div style="width: 100%; height: 15px; text-align: right;">
-					您好！${CURRENT_USER.empno }-${CURRENT_USER.name }&nbsp;|&nbsp;<a href="servlet/LoginAndOutServlet?opertype=1">退出</a>
+  		<div class="easyui-layout" style="width:1000px;height:100%; text-align:left; margin: 0 auto; ">
+			<div data-options="region:'north',split:true" style="width:100%; height:90px;overflow:hidden; background-color: #444; color: #0df; ">
+				<div style="width: 100%; height: 30px; text-align: right; margin-top: 10px; color: #fff;">
+					您好！${CURRENT_USER.empno }-${CURRENT_USER.name }&nbsp;|&nbsp;<a style="color: #fff;" href="servlet/LoginAndOutServlet?opertype=1">退出</a>&nbsp;&nbsp;
 				</div>
-				<h2>考勤系统</h2>
+				<h2 style="font-family: '微软雅黑'; margin: 0 0 10px 20px; ">考勤系统</h2>
 			</div>
-			<div data-options="region:'south',split:true" style="height:50px;background:#fafafa;"></div>
-			<div data-options="region:'west',split:true" title="菜单" style="width:150px;">
-				<div style="width: 100%; height:30px;"></div>
+			<div data-options="region:'south',split:true" style=" width:100%; height:50px; background-color: #444; overflow:hidden;"></div>
+			<div data-options="region:'west',split:true" style="width:150px; overflow:hidden; background-color: #ededed;">
 				<ul id="menu_ul" >
 					<c:forEach items="${CURRENT_USER_RIGHTS }" var="right"  >
-					<li><button onclick="document.getElementById('main_frame').src='${right.rightLink }'">${right.rightName }</button></li>
+					<li><button onclick="turnTo('${right.rightLink }','${right.rightName }');">${right.rightName }</button></li>
 					</c:forEach>
 				</ul>
 			</div>
-			<div data-options="region:'center',title:'主功能窗口'" style="background:#fafafa;overflow:hidden">
-				<iframe id="main_frame" width="100%" height="100%" src="page/checkin.jsp" frameborder="0"  />
+			<div id="center" data-options="region:'center',split:true" style="background:#fafafa;overflow:hidden; ">
+				<iframe id="main_frame" width="100%" height="100%" src="page/checkin.jsp" frameborder="0" scrolling="no" />
 			</div>
 		</div>
+		
+		
+		
 
   	</div>
   </body>

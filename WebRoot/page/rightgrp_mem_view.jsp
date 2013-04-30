@@ -54,13 +54,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<input type="hidden" name="rightgrpId" value="${rightgrp.id }" />
 		<table class="tableClass" cellspacing="1" >
   			<tr>
-  				<td>权限组</td>
+  				<th class="title">权限组</th>
   				<td>${rightgrp.rightgrp_name}</td>
   			</tr>
   			<tr>
-  				<td>
-  					成员分配
-  				</td>
+  				<th class="title">成员分配</th>
   				<td>
 	  				<ul class="setMem">
 	  					<li>

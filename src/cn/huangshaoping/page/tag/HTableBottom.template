@@ -1,11 +1,5 @@
-<table class="tableClass-Page" >
-	<tr>
-		<td>
-			¹²£º&nbsp;#totalSize&nbsp;Ìõ&nbsp;&nbsp;&nbsp;µÚ&nbsp;#currentPageNo/#totalPageNum&nbsp;Ò³&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<img src="/kqsys/img/btn_firstPage.gif" style="#firstStyle" onclick="HPageTable.go2page('#formName', #firstPageNo)" />&nbsp;&nbsp;
-			<img src="/kqsys/img/btn_prevPage.gif" style="#preStyle" onclick="HPageTable.go2page('#formName', #prePageNo)" />&nbsp;&nbsp;
-			<img src="/kqsys/img/btn_nextPage.gif" style="#nextStyle" onclick="HPageTable.go2page('#formName', #nextPageNo)" />&nbsp;&nbsp;
-			<img src="/kqsys/img/btn_lastPage.gif" style="#lastStyle" onclick="HPageTable.go2page('#formName', #lastPageNo)" />
-		</td>
-	</tr>
-</table>
+{0}&nbsp;#totalSize&nbsp;{1}&nbsp;&nbsp;&nbsp;{2}&nbsp;#currentPageNo/#totalPageNum&nbsp;{3}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="/kqsys/img/btn_firstPage.gif" style="#firstStyle" onclick="HPageTable.go2page('#formName', #firstPageNo)" />&nbsp;&nbsp;
+<img src="/kqsys/img/btn_prevPage.gif" style="#preStyle" onclick="HPageTable.go2page('#formName', #prePageNo)" />&nbsp;&nbsp;
+<img src="/kqsys/img/btn_nextPage.gif" style="#nextStyle" onclick="HPageTable.go2page('#formName', #nextPageNo)" />&nbsp;&nbsp;
+<img src="/kqsys/img/btn_lastPage.gif" style="#lastStyle" onclick="HPageTable.go2page('#formName', #lastPageNo)" />

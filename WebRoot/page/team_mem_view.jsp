@@ -54,13 +54,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<input type="hidden" name="teamId" value="${team.id }" />
 		<table class="tableClass" cellspacing="1" >
   			<tr>
-  				<td>组</td>
+  				<th class="title">组</th>
   				<td>${team.teamName}</td>
   			</tr>
   			<tr>
-  				<td>
+  				<th class="title">
   					成员分配
-  				</td>
+  				</th>
   				<td>
 	  				<ul class="setMem">
 	  					<li>

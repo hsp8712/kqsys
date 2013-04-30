@@ -92,16 +92,23 @@ public class MyCheckinRecordServlet extends HttpServlet {
 		// 当前登录用户
 		User curUser = (User)request.getSession().getAttribute(LoginAndOutServlet.SESSIONKEY_CURRENT_USER);
 		
-		String month = request.getParameter("month");
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
 		
 		StringBuffer sqlStrBuf = new StringBuffer("select date_format(a.check_time,'%Y-%m-%d %H:%i:%s') as check_time, ");
 		sqlStrBuf.append("a.check_ip, b.name from kq_checkinrecord a left join kq_user b on a.user_id=b.id ");
 		sqlStrBuf.append("where a.user_id=");
 		sqlStrBuf.append(curUser.getId());
 		
-		if(!StringUtil.isEmpty(month)) {
-			sqlStrBuf.append(" and date_format(a.check_time,'%Y%m')='");
-			sqlStrBuf.append(month);
+		if(!StringUtil.isEmpty(startDate)) {
+			sqlStrBuf.append(" and date_format(a.check_time,'%Y-%m-%d')>='");
+			sqlStrBuf.append(startDate);
+			sqlStrBuf.append("'");
+		}
+		
+		if(!StringUtil.isEmpty(endDate)) {
+			sqlStrBuf.append(" and date_format(a.check_time,'%Y-%m-%d')<='");
+			sqlStrBuf.append(endDate);
 			sqlStrBuf.append("'");
 		}
 		

@@ -3,6 +3,9 @@ package net.oraro.control;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,15 +104,27 @@ public class DailyRecordServlet extends HttpServlet {
 			return null;
 		}
 		
-		// 查询月
-		String month = request.getParameter("month");
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
 		
 		String sql = "select b.empno, b.name, a.record_date, a.first_time, a.last_time, a.over_time, a.over_time_hour" + 
 				" from kq_dailyrecord a, kq_user b where a.user_id=b.id and user_id in " + 
 				"(select id from kq_user where team_id=" + curTeamId + ") ";
 		
-		if(!StringUtil.isEmpty(month)) {
-			sql += "and date_format(a.record_date, '%Y%m')='" + month + "'";
+		if(!StringUtil.isEmpty(startDate)) {
+			sql += " and date_format(a.record_date, '%Y-%m-%d')>='" + startDate + "'";
+		} else {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			startDate = df.format(new Date());
+			sql += " and date_format(a.record_date, '%Y-%m-%d')>='" + startDate + "'";
+		}
+		
+		if(!StringUtil.isEmpty(endDate)) {
+			sql += " and date_format(a.record_date, '%Y-%m-%d')<='" + endDate + "'";
+		} else {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			endDate = df.format(new Date());
+			sql += " and date_format(a.record_date, '%Y-%m-%d')>='" + endDate + "'";
 		}
 		
 		List<Map<String, String>> dailyRecords = DBUtil.executeQuery(sql);
