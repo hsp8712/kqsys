@@ -64,7 +64,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				<td>
 	  				<ul class="setMem">
 	  					<li>
-	  						<br/>未非配用户：<br/><br/>
+	  						<br/>待分配：<br/><br/>
 	  						<select multiple="multiple" name="nomemUsers" size="10" >
 	  							<c:forEach var="user" items="${nomemUsers }">
 	  							<option value="${user.id }" >

@@ -58,11 +58,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				<td>${rightgrp.rightgrp_name}</td>
   			</tr>
   			<tr>
-  				<th class="title">成员分配</th>
+  				<th class="title">权限分配</th>
   				<td>
 	  				<ul class="setMem">
 	  					<li>
-	  						<br/>所有权限：<br/><br/>
+	  						<br/>待分配：<br/><br/>
 	  						<select multiple="multiple" name="rights" size="10" >
 	  							<c:forEach var="right" items="${rights }">
 	  							<option value="${right.id }" >
@@ -80,7 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								class="easyui-linkbutton" data-options="iconCls:'icon-remove'">移除</a>
 	  					</li>
 	  					<li>
-	  						<br/>组成员用户：<br/><br/>
+	  						<br/>已分配：<br/><br/>
 	  						<select multiple="multiple" name="memRights" size="10">
 	  							<c:forEach var="right" items="${memRights }">
 	  							<option value="${right.id }" >
