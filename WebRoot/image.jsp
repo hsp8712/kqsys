@@ -1,7 +1,7 @@
 <%@ page contentType="image/jpeg" import="java.awt.*,
 java.awt.image.*,java.util.*,javax.imageio.*" %>
 <%@ page import="java.io.OutputStream" %>
-<%@page import="net.oraro.control.ServletConstants"%>
+<%@page import="cn.huangshaoping.control.ServletConstants"%>
 <%!
 Color getRandColor(int fc,int bc){//给定范围获得随机颜色
         Random random = new Random();
