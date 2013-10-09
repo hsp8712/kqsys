@@ -50,7 +50,7 @@
 
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
     <jar jarfile="${dist.lib}/${ant.project.name}-${DSTAMP}.jar" basedir="${dist.build}"/>
-    <war destfile="${dist}/${ant.project.name}.war" webxml="${web_root}/WEB-INF/web.xml">
+    <war destfile="${dist}/${ant.project.name}.zip" webxml="${web_root}/WEB-INF/web.xml">
     	<fileset dir="${web_root}" >
     		<exclude name="WEB-INF/" />
     	</fileset>
