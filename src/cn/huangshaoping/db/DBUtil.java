@@ -1,5 +1,6 @@
 package cn.huangshaoping.db;
 
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.naming.Context;
@@ -19,6 +21,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 
+import org.apache.commons.dbcp.BasicDataSourceFactory;
 import org.apache.log4j.Logger;
 
 import cn.huangshaoping.bean.Team;
@@ -44,18 +47,28 @@ public class DBUtil {
 	/**
 	 * 获取数据源
 	 * @return
+	 * @throws SQLException 
 	 */
-	private static DataSource getDataSource() {
+	private static DataSource getDataSource() throws SQLException {
 		if(dataSource != null) {
 			return dataSource;
 		}
 		
+		Properties dbConfig = null;
 		try {
-			Context initCtx = new InitialContext();
-			Context envCtx = (Context) initCtx.lookup("java:comp/env");
-			dataSource = (DataSource)envCtx.lookup("jdbc/kqsys");
-		} catch (NamingException e) {
+			dbConfig = new Properties();
+			dbConfig.load(Thread.currentThread()
+					.getContextClassLoader()
+					.getResourceAsStream("db.properties"));
+		} catch (IOException e) {
 			log.error(e.getMessage(), e);
+			throw new SQLException("File db.properties load failed.");
+		}
+		try {
+			dataSource = BasicDataSourceFactory.createDataSource(dbConfig);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new SQLException("DataSource created failed.");
 		}
 		
 		return dataSource;
